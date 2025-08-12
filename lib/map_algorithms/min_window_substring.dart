@@ -1,4 +1,15 @@
-/// Minimum Window Substring (Map + Sliding Window)
+/// Finds the minimum window substring in [s] containing all characters of [t] using a map and sliding window.
+///
+/// This function returns the smallest substring of [s] that contains all characters of [t].
+/// If no such window exists, returns an empty string.
+///
+/// Time Complexity: O(n), where n is the length of [s].
+///
+/// Example:
+/// ```dart
+/// var result = minWindowSubstring("ADOBECODEBANC", "ABC");
+/// print(result); // Outputs: "BANC"
+/// ```
 String minWindowSubstring(String s, String t) {
   if (t.isEmpty || s.isEmpty) return '';
   final need = <String, int>{};

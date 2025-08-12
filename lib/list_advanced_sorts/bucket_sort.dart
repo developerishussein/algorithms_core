@@ -1,6 +1,17 @@
-/// 🪣 Bucket Sort (O(n + k), for uniformly distributed data)
+/// Sorts a list of non-negative doubles using the Bucket Sort algorithm.
 ///
-/// Sorts the list [arr] using bucket sort. Only for non-negative doubles.
+/// This function sorts the list [arr] using bucket sort, which is efficient for uniformly distributed data.
+/// The input must be a list of non-negative doubles. The function modifies the list in-place.
+///
+/// Time Complexity: O(n + k), where n is the number of elements and k is the number of buckets (best/average case).
+/// Space Complexity: O(n + k)
+///
+/// Example:
+/// ```dart
+/// var arr = [0.42, 4.21, 3.14, 2.71, 1.61, 0.99];
+/// bucketSort(arr);
+/// print(arr); // Outputs: [0.42, 0.99, 1.61, 2.71, 3.14, 4.21]
+/// ```
 void bucketSort(List<double> arr) {
   if (arr.isEmpty) return;
   final n = arr.length;

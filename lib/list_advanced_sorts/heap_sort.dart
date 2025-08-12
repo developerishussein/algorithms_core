@@ -1,6 +1,17 @@
-/// 🥔 Heap Sort (in-place, O(n log n))
+/// Sorts a list in-place using the Heap Sort algorithm.
 ///
-/// Sorts the list [arr] in-place using heap sort.
+/// This function sorts the list [arr] using Heap Sort, an efficient comparison-based sorting algorithm.
+/// The function works in-place and is suitable for large lists. The [arr] must contain comparable elements.
+///
+/// Time Complexity: O(n log n)
+/// Space Complexity: O(1)
+///
+/// Example:
+/// ```dart
+/// var arr = [4, 10, 3, 5, 1];
+/// heapSort(arr);
+/// print(arr); // Outputs: [1, 3, 4, 5, 10]
+/// ```
 void heapSort<T extends Comparable>(List<T> arr) {
   int n = arr.length;
   void heapify(int n, int i) {

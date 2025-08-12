@@ -1,7 +1,21 @@
-/// 🐀 Rat in a Maze (Backtracking)
+/// Finds all possible paths for a rat to reach the bottom-right corner from the top-left in a maze using backtracking.
 ///
-/// Returns all possible paths for a rat to reach the bottom-right corner from the top-left in a grid.
-/// 1 = open cell, 0 = blocked. Moves: D, L, R, U.
+/// This function returns all possible paths for a rat to move from the top-left to the bottom-right corner in a grid [maze].
+/// The rat can move Down (D), Left (L), Right (R), or Up (U) to open cells (1). Blocked cells are marked as 0.
+///
+/// Time Complexity: O(4^(n*n)), where n is the size of the maze (worst case, exponential due to backtracking).
+///
+/// Example:
+/// ```dart
+/// var maze = [
+///   [1, 0, 0, 0],
+///   [1, 1, 0, 1],
+///   [0, 1, 0, 0],
+///   [1, 1, 1, 1]
+/// ];
+/// var result = ratInMaze(maze);
+/// print(result); // Outputs: ["DDRDRR", "DRDDRR"]
+/// ```
 List<String> ratInMaze(List<List<int>> maze) {
   int n = maze.length;
   List<String> result = [];

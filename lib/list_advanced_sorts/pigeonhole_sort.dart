@@ -1,6 +1,17 @@
-/// 🕳️ Pigeonhole Sort (O(n + Range))
+/// Sorts a list of integers in-place using the Pigeonhole Sort algorithm.
 ///
-/// Sorts the list [arr] of integers using pigeonhole sort.
+/// This function sorts the list [arr] using Pigeonhole Sort, which is efficient when the range of input values is not much larger than the list size.
+/// The function works in-place and is suitable for integer lists with a small range.
+///
+/// Time Complexity: O(n + Range), where n is the number of elements and Range is the difference between max and min values.
+/// Space Complexity: O(Range)
+///
+/// Example:
+/// ```dart
+/// var arr = [8, 3, 2, 7, 4, 6, 8];
+/// pigeonholeSort(arr);
+/// print(arr); // Outputs: [2, 3, 4, 6, 7, 8, 8]
+/// ```
 void pigeonholeSort(List<int> arr) {
   if (arr.isEmpty) return;
   int minVal = arr.reduce((a, b) => a < b ? a : b);

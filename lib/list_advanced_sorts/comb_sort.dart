@@ -1,6 +1,17 @@
-/// 🐓 Comb Sort (O(n^2) worst, O(n log n) best)
+/// Sorts a list in-place using the Comb Sort algorithm.
 ///
-/// Sorts the list [arr] in-place using comb sort.
+/// This function sorts the list [arr] using Comb Sort, an improvement over Bubble Sort that eliminates small values near the end.
+/// The function works in-place and is efficient for medium-sized lists. The [arr] must contain comparable elements.
+///
+/// Time Complexity: O(n^2) worst case, O(n log n) best case.
+/// Space Complexity: O(1)
+///
+/// Example:
+/// ```dart
+/// var arr = [5, 3, 8, 4, 2];
+/// combSort(arr);
+/// print(arr); // Outputs: [2, 3, 4, 5, 8]
+/// ```
 void combSort<T extends Comparable>(List<T> arr) {
   int n = arr.length;
   int gap = n;

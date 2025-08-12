@@ -1,6 +1,17 @@
-/// 🟣 Odd-Even Sort (Brick Sort, O(n^2) worst)
+/// Sorts a list in-place using the Odd-Even Sort (Brick Sort) algorithm.
 ///
-/// Sorts the list [arr] in-place using odd-even sort.
+/// This function sorts the list [arr] using Odd-Even Sort, also known as Brick Sort, which is a parallelizable sorting algorithm.
+/// The function works in-place and is suitable for parallel hardware or educational purposes. The [arr] must contain comparable elements.
+///
+/// Time Complexity: O(n^2) worst case.
+/// Space Complexity: O(1)
+///
+/// Example:
+/// ```dart
+/// var arr = [4, 2, 1, 3];
+/// oddEvenSort(arr);
+/// print(arr); // Outputs: [1, 2, 3, 4]
+/// ```
 void oddEvenSort<T extends Comparable>(List<T> arr) {
   int n = arr.length;
   bool sorted = false;

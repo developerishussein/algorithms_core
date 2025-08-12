@@ -1,6 +1,17 @@
-/// 🔄 Cycle Sort (O(n^2), in-place, minimum writes)
+/// Sorts a list in-place using the Cycle Sort algorithm (minimizes writes).
 ///
-/// Sorts the list [arr] in-place using cycle sort.
+/// This function sorts the list [arr] using Cycle Sort, which is optimal for minimizing the number of writes to the array.
+/// It is useful when write operations are expensive. The [arr] must contain comparable elements.
+///
+/// Time Complexity: O(n^2)
+/// Space Complexity: O(1)
+///
+/// Example:
+/// ```dart
+/// var arr = [3, 1, 4, 1, 5, 9, 2];
+/// cycleSort(arr);
+/// print(arr); // Outputs: [1, 1, 2, 3, 4, 5, 9]
+/// ```
 void cycleSort<T extends Comparable>(List<T> arr) {
   int n = arr.length;
   for (int cycleStart = 0; cycleStart < n - 1; cycleStart++) {

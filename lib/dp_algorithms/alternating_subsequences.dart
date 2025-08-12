@@ -1,9 +1,16 @@
-/// 🔄 Alternating Subsequences (Longest Alternating Subsequence)
+/// Finds the length of the longest alternating (up/down) subsequence in a list using dynamic programming.
 ///
-/// Returns the length of the longest alternating (up/down) subsequence in [nums].
+/// This function returns the length of the longest subsequence in [nums] where the elements alternately increase and decrease.
+/// The subsequence does not need to be contiguous. Runs in linear time and constant space.
 ///
-/// Time Complexity: O(n)
+/// Time Complexity: O(n), where n is the length of [nums].
 /// Space Complexity: O(1)
+///
+/// Example:
+/// ```dart
+/// var result = longestAlternatingSubsequence([1, 5, 4]);
+/// print(result); // Outputs: 3 ([1,5,4])
+/// ```
 int longestAlternatingSubsequence(List<int> nums) {
   if (nums.isEmpty) return 0;
   int up = 1, down = 1;

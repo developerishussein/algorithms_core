@@ -1,6 +1,17 @@
-/// 🥞 Pancake Sort (O(n^2))
+/// Sorts a list in-place using the Pancake Sort algorithm.
 ///
-/// Sorts the list [arr] in-place using pancake sort.
+/// This function sorts the list [arr] using Pancake Sort, a comparison-based sorting algorithm that repeatedly flips subarrays.
+/// The function works in-place and is mainly of theoretical and educational interest. The [arr] must contain comparable elements.
+///
+/// Time Complexity: O(n^2)
+/// Space Complexity: O(1)
+///
+/// Example:
+/// ```dart
+/// var arr = [3, 6, 1, 5, 2, 4];
+/// pancakeSort(arr);
+/// print(arr); // Outputs: [1, 2, 3, 4, 5, 6]
+/// ```
 void pancakeSort<T extends Comparable>(List<T> arr) {
   int n = arr.length;
   void flip(int k) {

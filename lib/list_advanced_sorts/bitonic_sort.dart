@@ -1,6 +1,17 @@
-/// 🔀 Bitonic Sort (O(n log^2 n)), for n = 2^k
+/// Sorts a list in-place using the Bitonic Sort algorithm (for lengths that are powers of 2).
 ///
-/// Sorts the list [arr] in-place using bitonic sort. Only for lengths that are powers of 2.
+/// This function sorts the list [arr] using Bitonic Sort, which is a parallel sorting algorithm suitable for hardware and networks.
+/// The list length must be a power of 2. The [ascending] parameter controls the sort order.
+///
+/// Time Complexity: O(n log^2 n), where n is the length of the list.
+/// Space Complexity: O(log n) for recursion stack.
+///
+/// Example:
+/// ```dart
+/// var arr = [3, 7, 4, 8, 6, 2, 1, 5];
+/// bitonicSort(arr);
+/// print(arr); // Outputs: [1, 2, 3, 4, 5, 6, 7, 8]
+/// ```
 void bitonicSort<T extends Comparable>(List<T> arr, {bool ascending = true}) {
   void bitonicMerge(int low, int cnt, bool dir) {
     if (cnt > 1) {

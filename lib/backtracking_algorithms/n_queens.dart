@@ -1,7 +1,16 @@
-/// 👑 N-Queens Problem (Backtracking)
+/// Solves the N-Queens problem using backtracking and returns all valid board configurations.
 ///
-/// Returns all distinct solutions for the n-queens puzzle as a list of board states.
-/// Each board state is represented as a list of strings, where 'Q' is a queen and '.' is empty.
+/// This function finds all distinct solutions to the N-Queens puzzle for a given [n].
+/// Each solution is represented as a list of strings, where 'Q' indicates a queen and '.' indicates an empty space.
+///
+/// Time Complexity: O(n!), exponential in n due to backtracking.
+///
+/// Example:
+/// ```dart
+/// var result = solveNQueens(4);
+/// print(result);
+/// // Outputs: [[".Q..","...Q","Q...","..Q."],["..Q.","Q...","...Q",".Q.."]]
+/// ```
 List<List<String>> solveNQueens(int n) {
   if (n == 0) return [];
   List<List<String>> solutions = [];
