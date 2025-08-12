@@ -1,6 +1,6 @@
 ## 🧠 algorithms core
 
-![Temporary Logo](https://github.com/POFKLabs/algorithms_core/blob/main/logo/logo.jpg)
+![Temporary Logo](https://github.com/developerishussein/algorithms_core/blob/main/logo/logo.jpg)
 
 > A comprehensive, fast, and extensible algorithms library for Dart. Includes classic and modern techniques for lists, sets, maps, strings, and graphs — built with clean APIs and strong generics.
 
