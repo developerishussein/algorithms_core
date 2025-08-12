@@ -1,0 +1,17 @@
+name: algorithms_core
+description: "A fast, extensible Dart library providing efficient algorithms and data structures, including search, sort, graph, string, set, map utilities, and AI helpers."
+version: 0.1.2
+repository: https://github.com/POFKLabs/algorithms_core
+issue_tracker: https://github.com/POFKLabs/algorithms_core/issues
+
+environment:
+  sdk: '>=3.7.2 <4.0.0'
+
+dependencies:
+  benchmark_harness: ^2.3.1
+
+dev_dependencies:
+  lints: ^5.0.0
+  test: ^1.24.0
+
+license: MIT
