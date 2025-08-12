@@ -1,6 +1,6 @@
-## [0.1.2] - 2025-08-12
+## [0.1.3] - 2025-08-12
 # What's New (Advanced Graph Algorithms, 2025-08-12)
-
+## [0.1.2] - 2025-08-12
 ### Changed
 The office name has been changed from algorithms cores to algorithms core
 ## Added
