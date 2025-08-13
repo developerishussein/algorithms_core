@@ -1,6 +1,6 @@
 name: algorithms_core
 description: "A fast, extensible #Dart library providing efficient #algorithms and data structures, #including #search, #sort, #graph, #string, #set, #map utilities, and #AI helpers."
-version: 0.1.4
+version: 0.1.5
 repository: https://github.com/POFKLabs/algorithms_core
 homepage: https://pofk.vercel.app/
 environment:
