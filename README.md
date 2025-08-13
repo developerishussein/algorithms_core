@@ -33,7 +33,7 @@ flutter pub add algorithms_core
 ---
 
 ## 🚀 Quick start
-
+## algorithm
 ```dart
 import 'package:algorithms_core/algorithms_core.dart';
 import 'package:algorithms_core/graph_algorithms/weighted_edge.dart';
