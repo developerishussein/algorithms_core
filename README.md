@@ -1,6 +1,6 @@
 ## 🧠 algorithms core
 
-![Temporary Logo](https://github.com/developerishussein/algorithms_core/blob/main/logo/logo.jpg)
+![Temporary Logo](https://l.top4top.io/p_35120t9451.png)
 
 > A comprehensive, fast, and extensible algorithms library for Dart. Includes classic and modern techniques for lists, sets, maps, strings, and graphs — built with clean APIs and strong generics.
 
@@ -14,7 +14,7 @@ Environment: Dart SDK ≥ 3.7.2 (see `pubspec.yaml`).
 
 ---
 
-## 📦 Install
+## 📦 Install ## algorithms core
 
 Use in your Dart or Flutter project.
 
@@ -24,7 +24,7 @@ Use in your Dart or Flutter project.
 dart pub add algorithms_core
 ```
 
-### Flutter
+### Flutter 
 
 ```bash
 flutter pub add algorithms_core
@@ -32,8 +32,8 @@ flutter pub add algorithms_core
 
 ---
 
-## 🚀 Quick start
-## algorithm
+## 🚀 Quick start ## algorithm
+
 ```dart
 import 'package:algorithms_core/algorithms_core.dart';
 import 'package:algorithms_core/graph_algorithms/weighted_edge.dart';
@@ -156,6 +156,32 @@ dart test
 All tests pass in the repository (see `test/`).
 
 ---
+## Key Algorithms
+
+ Algorithm                      |Description
+------------------------------|----------------------------------------------------------
+ binary_search                | Fast and efficient binary search on a sorted list.
+merge_sort                    | Stable sorting algorithm with excellent performance.
+quick_sort                    | Fast sorting algorithm with good average-case performance.
+kadanes_algorithm             | Finds the maximum sum of a contiguous subarray.
+dijkstra                      | Finds the shortest path in a weighted directed graph.
+bellman_ford                  | Shortest path algorithm that handles negative weights and detects negative cycles.
+floyd_warshall                | Finds shortest paths between all pairs of nodes in a graph.
+bfs (Breadth-First Search)    | Graph traversal method for connectivity and shortest unweighted paths.
+dfs (Depth-First Search)      | Graph traversal method for cycle detection, classification, and orderings.
+topological_sort              | Orders nodes in a directed acyclic graph (DAG).
+disjoint_set (Union-Find)     | Data structure for managing disjoint sets and connectivity.
+kmp_search (Knuth-Morris-Pratt) | Efficient substring search using prefix tables.
+rabin_karp_search             | Substring search algorithm based on hashing.
+longest_common_prefix         | Finds the longest common prefix among a list of strings.
+lowest_common_ancestor (LCA)  | Finds the lowest common ancestor node in a tree.
+validate_bst                  | Validates whether a binary tree is a binary search tree.
+reverse_linked_list           | Reverses a singly or doubly linked list.
+detect_cycle (Floyd’s Cycle Detection) | Detects cycles in a linked list.
+mst_kruskal                   | Constructs a minimum spanning tree using Kruskal's algorithm.
+mst_prim                      | Constructs a minimum spanning tree using Prim's algorithm.
+
+---
 
 ## 🤝 Contributing
 
@@ -178,4 +204,11 @@ Open a PR with a brief description and test cases.
 ## 📄 License
 
 MIT. See `LICENSE`.
-"# algorithms_core" 
+## The most important sections of the library algorithms_core 
+## backtracking algorithms
+## Tree.md Important to know the library structure algorithms core
+## Benchmark Report.md To view the library's benchmark results algorithms core
+## graph algorithms
+## dp algorithms
+## list advanced sorts
+## linked list algorithm
