@@ -22,8 +22,11 @@ class ANN {
   final List<int> layers;
   final int epochs;
   final double lr;
+  final Random _rand;
+  /// history of loss values (one entry per epoch)
+  final List<double> lossHistory = [];
 
-  ANN({required this.layers, this.epochs = 100, this.lr = 0.01}) {
+  ANN({required this.layers, this.epochs = 100, this.lr = 0.01, int? seed}) : _rand = seed != null ? Random(seed) : Random() {
     if (layers.length < 2) {
       throw ArgumentError('layers must include input and output sizes');
     }
@@ -36,7 +39,7 @@ class ANN {
   double? lastLoss;
 
   void _initParams() {
-    rand() => (Random().nextDouble());
+    rand() => _rand.nextDouble();
     weights = [];
     biases = [];
     for (var l = 1; l < layers.length; l++) {
@@ -98,105 +101,200 @@ class ANN {
     return s / pred.length;
   }
 
-  void fit(List<List<double>> X, List<List<double>> Y) {
+  /// Train the network.
+  ///
+  /// Optional arguments:
+  /// - batchSize: if null or >= n, full-batch; otherwise uses mini-batches.
+  /// - verbose: if true, prints epoch loss.
+  /// - optimizer: 'sgd' (default), 'momentum', or 'adam'.
+  void fit(List<List<double>> X, List<List<double>> Y,
+      {int? batchSize, bool verbose = false, String optimizer = 'sgd', double momentum = 0.9, double beta1 = 0.9, double beta2 = 0.999, double epsilon = 1e-8}) {
     if (X.isEmpty) throw ArgumentError('Empty dataset');
     if (X.length != Y.length) {
       throw ArgumentError('X and Y must have same number of rows');
     }
     _initParams();
     final n = X.length;
+    final useBatch = (batchSize == null || batchSize >= n) ? n : batchSize;
+
+    // optimizer state (for momentum/adam)
+    List<List<List<double>>> vW = [];
+    List<List<double>> vB = [];
+    List<List<List<double>>> mW = [];
+    List<List<List<double>>> vAdamW = [];
+    List<List<double>> mB = [];
+    List<List<double>> vAdamB = [];
+    var t = 0;
+
+    // initialize optimizer accumulators
+    if (optimizer == 'momentum') {
+      for (var l = 0; l < weights.length; l++) {
+        vW.add(List.generate(weights[l].length, (_) => List<double>.filled(weights[l][0].length, 0.0)));
+        vB.add(List<double>.filled(biases[l].length, 0.0));
+      }
+    } else if (optimizer == 'adam') {
+      for (var l = 0; l < weights.length; l++) {
+        mW.add(List.generate(weights[l].length, (_) => List<double>.filled(weights[l][0].length, 0.0)));
+        vAdamW.add(List.generate(weights[l].length, (_) => List<double>.filled(weights[l][0].length, 0.0)));
+        mB.add(List<double>.filled(biases[l].length, 0.0));
+        vAdamB.add(List<double>.filled(biases[l].length, 0.0));
+      }
+    }
+
     for (var epoch = 0; epoch < epochs; epoch++) {
       // forward for all examples (batch gradient descent)
-      final activations =
-          <List<List<double>>>[]; // activations per layer for each sample
-      final preacts = <List<List<double>>>[];
-      for (var i = 0; i < n; i++) {
-        var a = X[i];
-        final acts = <List<double>>[a];
-        final pres = <List<double>>[];
-        for (var l = 0; l < weights.length; l++) {
-          final w = weights[l];
-          final b = biases[l];
-          final z = List<double>.filled(w.length, 0.0);
-          for (var ii = 0; ii < w.length; ii++) {
-            var s = b[ii];
-            for (var jj = 0; jj < w[ii].length; jj++) {
-              s += w[ii][jj] * a[jj];
-            }
-            z[ii] = s;
-          }
-          pres.add(z);
-          if (l == weights.length - 1) {
-            a = z.map((v) => _sigmoid(v)).toList();
-          } else {
-            a = z.map((v) => _relu(v)).toList();
-          }
-          acts.add(a);
+      // We'll perform mini-batch training: create shuffled indices
+      final indices = List<int>.generate(n, (i) => i);
+      if (useBatch < n) {
+        // shuffle
+        for (var i = indices.length - 1; i > 0; i--) {
+          final j = _rand.nextInt(i + 1);
+          final tmp = indices[i];
+          indices[i] = indices[j];
+          indices[j] = tmp;
         }
-        activations.add(acts);
-        preacts.add(pres);
       }
 
-      // compute gradients
-      final gradW = List.generate(
-        weights.length,
-        (l) => List.generate(
-          weights[l].length,
-          (_) => List<double>.filled(weights[l][0].length, 0.0),
-        ),
-      );
-      final gradB = List.generate(
-        biases.length,
-        (l) => List<double>.filled(biases[l].length, 0.0),
-      );
+      for (var batchStart = 0; batchStart < n; batchStart += useBatch) {
+        final batchEnd = (batchStart + useBatch).clamp(0, n);
+        final bsize = batchEnd - batchStart;
 
-      for (var i = 0; i < n; i++) {
-        final y = Y[i];
-        final acts = activations[i];
-        final pres = preacts[i];
-        // delta at output
-        final out = acts.last;
-        final delta = List<double>.filled(out.length, 0.0);
-        for (var k = 0; k < out.length; k++) {
-          final err = out[k] - y[k];
-          delta[k] = err * _sigmoidDeriv(out[k]);
-        }
-        var curDelta = delta;
-        // backpropagate
-        for (var l = weights.length - 1; l >= 0; l--) {
-          final aPrev = acts[l];
-          for (var iOut = 0; iOut < weights[l].length; iOut++) {
-            gradB[l][iOut] += curDelta[iOut];
-            for (var iIn = 0; iIn < weights[l][iOut].length; iIn++) {
-              gradW[l][iOut][iIn] += curDelta[iOut] * aPrev[iIn];
-            }
-          }
-          if (l > 0) {
-            final nextDelta = List<double>.filled(weights[l - 1].length, 0.0);
-            for (var iPrev = 0; iPrev < weights[l - 1].length; iPrev++) {
-              var s = 0.0;
-              for (var iOut = 0; iOut < weights[l].length; iOut++) {
-                s += weights[l][iOut][iPrev] * curDelta[iOut];
+        // prepare batch activations and preacts
+        final activations = <List<List<double>>>[];
+        final preacts = <List<List<double>>>[];
+
+        for (var bi = batchStart; bi < batchEnd; bi++) {
+          final idx = indices[bi];
+          var a = X[idx];
+          final acts = <List<double>>[a];
+          final pres = <List<double>>[];
+          for (var l = 0; l < weights.length; l++) {
+            final w = weights[l];
+            final b = biases[l];
+            final z = List<double>.filled(w.length, 0.0);
+            for (var ii = 0; ii < w.length; ii++) {
+              var s = b[ii];
+              for (var jj = 0; jj < w[ii].length; jj++) {
+                s += w[ii][jj] * a[jj];
               }
-              // derivative depends on preact
-              nextDelta[iPrev] = s * _reluDeriv(pres[l - 1][iPrev]);
+              z[ii] = s;
             }
-            curDelta = nextDelta;
+            pres.add(z);
+            if (l == weights.length - 1) {
+              a = z.map((v) => _sigmoid(v)).toList();
+            } else {
+              a = z.map((v) => _relu(v)).toList();
+            }
+            acts.add(a);
           }
+          activations.add(acts);
+          preacts.add(pres);
+        }
+
+        // compute gradients for batch
+        final gradW = List.generate(
+            weights.length,
+            (l) => List.generate(
+                weights[l].length,
+                (_) => List<double>.filled(weights[l][0].length, 0.0)));
+        final gradB = List.generate(
+            biases.length, (l) => List<double>.filled(biases[l].length, 0.0));
+
+        for (var bi = 0; bi < activations.length; bi++) {
+          final idx = indices[batchStart + bi];
+          final y = Y[idx];
+          final acts = activations[bi];
+          final pres = preacts[bi];
+          final out = acts.last;
+          final delta = List<double>.filled(out.length, 0.0);
+          for (var k = 0; k < out.length; k++) {
+            final err = out[k] - y[k];
+            delta[k] = err * _sigmoidDeriv(out[k]);
+          }
+          var curDelta = delta;
+          for (var l = weights.length - 1; l >= 0; l--) {
+            final aPrev = acts[l];
+            for (var iOut = 0; iOut < weights[l].length; iOut++) {
+              gradB[l][iOut] += curDelta[iOut];
+              for (var iIn = 0; iIn < weights[l][iOut].length; iIn++) {
+                gradW[l][iOut][iIn] += curDelta[iOut] * aPrev[iIn];
+              }
+            }
+            if (l > 0) {
+              final nextDelta = List<double>.filled(weights[l - 1].length, 0.0);
+              for (var iPrev = 0; iPrev < weights[l - 1].length; iPrev++) {
+                var s = 0.0;
+                for (var iOut = 0; iOut < weights[l].length; iOut++) {
+                  s += weights[l][iOut][iPrev] * curDelta[iOut];
+                }
+                nextDelta[iPrev] = s * _reluDeriv(pres[l - 1][iPrev]);
+              }
+              curDelta = nextDelta;
+            }
+          }
+          // processed counter removed
+        }
+
+        // average gradients over batch
+        for (var l = 0; l < weights.length; l++) {
+          for (var iOut = 0; iOut < weights[l].length; iOut++) {
+            for (var iIn = 0; iIn < weights[l][iOut].length; iIn++) {
+              gradW[l][iOut][iIn] /= bsize;
+            }
+            gradB[l][iOut] /= bsize;
+          }
+        }
+
+        // optimizer updates
+        if (optimizer == 'sgd') {
+          for (var l = 0; l < weights.length; l++) {
+            for (var iOut = 0; iOut < weights[l].length; iOut++) {
+              for (var iIn = 0; iIn < weights[l][iOut].length; iIn++) {
+                weights[l][iOut][iIn] -= lr * gradW[l][iOut][iIn];
+              }
+              biases[l][iOut] -= lr * gradB[l][iOut];
+            }
+          }
+        } else if (optimizer == 'momentum') {
+          for (var l = 0; l < weights.length; l++) {
+            for (var iOut = 0; iOut < weights[l].length; iOut++) {
+              for (var iIn = 0; iIn < weights[l][iOut].length; iIn++) {
+                vW[l][iOut][iIn] = momentum * vW[l][iOut][iIn] + lr * gradW[l][iOut][iIn];
+                weights[l][iOut][iIn] -= vW[l][iOut][iIn];
+              }
+              vB[l][iOut] = momentum * vB[l][iOut] + lr * gradB[l][iOut];
+              biases[l][iOut] -= vB[l][iOut];
+            }
+          }
+        } else if (optimizer == 'adam') {
+          t += 1;
+          for (var l = 0; l < weights.length; l++) {
+            for (var iOut = 0; iOut < weights[l].length; iOut++) {
+              for (var iIn = 0; iIn < weights[l][iOut].length; iIn++) {
+                final g = gradW[l][iOut][iIn];
+                mW[l][iOut][iIn] = beta1 * mW[l][iOut][iIn] + (1 - beta1) * g;
+                vAdamW[l][iOut][iIn] = beta2 * vAdamW[l][iOut][iIn] + (1 - beta2) * g * g;
+                final mHat = mW[l][iOut][iIn] / (1 - pow(beta1, t));
+                final vHat = vAdamW[l][iOut][iIn] / (1 - pow(beta2, t));
+                weights[l][iOut][iIn] -= lr * mHat / (sqrt(vHat) + epsilon);
+              }
+              final gb = gradB[l][iOut];
+              mB[l][iOut] = beta1 * mB[l][iOut] + (1 - beta1) * gb;
+              vAdamB[l][iOut] = beta2 * vAdamB[l][iOut] + (1 - beta2) * gb * gb;
+              final mHatB = mB[l][iOut] / (1 - pow(beta1, t));
+              final vHatB = vAdamB[l][iOut] / (1 - pow(beta2, t));
+              biases[l][iOut] -= lr * mHatB / (sqrt(vHatB) + epsilon);
+            }
+          }
+        } else {
+          throw ArgumentError('Unknown optimizer: $optimizer');
         }
       }
 
-      // apply gradients (average over batch)
-      for (var l = 0; l < weights.length; l++) {
-        for (var iOut = 0; iOut < weights[l].length; iOut++) {
-          for (var iIn = 0; iIn < weights[l][iOut].length; iIn++) {
-            weights[l][iOut][iIn] -= (lr / n) * gradW[l][iOut][iIn];
-          }
-          biases[l][iOut] -= (lr / n) * gradB[l][iOut];
-        }
-      }
-      // compute epoch loss and store
-      lastLoss = _mseLoss(predict(X), Y);
+  // compute epoch loss and store (mean over samples) using helper
+  lastLoss = _mseLoss(predict(X), Y);
+      lossHistory.add(lastLoss!);
+      if (verbose) print('epoch=$epoch loss=$lastLoss');
     }
   }
 }
