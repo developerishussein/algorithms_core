@@ -11,7 +11,6 @@
 library;
 
 import 'dart:async';
-import 'dart:math';
 import 'package:algorithms_core/consensus_algorithms/gossip_protocol.dart';
 
 void main() async {

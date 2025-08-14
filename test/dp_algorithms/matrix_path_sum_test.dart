@@ -30,8 +30,8 @@ void main() {
       );
     });
     test('Empty grid', () {
-      expect(minPathSum([]), equals(0));
-      expect(minPathSum([[]]), equals(0));
+      expect(() => minPathSum([]), throwsArgumentError);
+      expect(() => minPathSum([[]]), throwsArgumentError);
     });
   });
 }

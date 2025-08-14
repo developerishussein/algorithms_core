@@ -11,7 +11,7 @@ void main() {
         dModel: 16,
         heads: 2,
         vocabSize: 1000,
-        headLayers: [2],
+        headLayers: [16, 8, 16], // Fixed: includes input (16), hidden (8), output (16) sizes
       );
       final out = model.predict(X);
       expect(out.length, equals(1));

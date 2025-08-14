@@ -10,7 +10,6 @@
 /// ```
 library;
 
-import 'dart:convert';
 import 'dart:math';
 import 'package:algorithms_core/tree_algorithms/merkle_tree.dart';
 

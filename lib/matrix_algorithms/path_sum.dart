@@ -17,12 +17,22 @@
 bool hasPathSum<T extends num>(List<List<T>> matrix, T target) {
   final m = matrix.length, n = matrix.isNotEmpty ? matrix[0].length : 0;
   if (m == 0 || n == 0) return false;
+
   bool dfs(int r, int c, T sum) {
     if (r < 0 || r >= m || c < 0 || c >= n) return false;
-    sum = (sum + matrix[r][c]) as T;
-    if (r == m - 1 && c == n - 1) return sum == target;
-    return dfs(r + 1, c, sum) || dfs(r, c + 1, sum);
+
+    // Add current cell value to sum
+    final currentSum = (sum + matrix[r][c]) as T;
+
+    // If we reached the bottom-right corner, check if sum equals target
+    if (r == m - 1 && c == n - 1) {
+      return currentSum == target;
+    }
+
+    // Try moving right and down
+    return dfs(r + 1, c, currentSum) || dfs(r, c + 1, currentSum);
   }
 
+  // Start DFS from (0,0) with initial sum 0
   return dfs(0, 0, (0 as T));
 }

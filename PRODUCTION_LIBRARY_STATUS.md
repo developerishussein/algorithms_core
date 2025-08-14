@@ -166,3 +166,7 @@ This library is designed for **enterprise production use** and includes:
 - **Security best practices**
 
 **Status: PRODUCTION READY FOR ENTERPRISE DEPLOYMENT** 🚀
+
+dart test --chain-stack-traces 
+
+Fix any issues. This is a production library, not an educational one. All code should be professional and advanced. Also, optimize it to the maximum for maximum performance.When you fix errors, read the algorithm file and its test file to know if the error is in the test file or in the algorithm itself.

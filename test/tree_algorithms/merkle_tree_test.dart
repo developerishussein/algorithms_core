@@ -1,6 +1,5 @@
 import 'package:algorithms_core/tree_algorithms/merkle_tree.dart';
 import 'package:test/test.dart';
-import 'dart:math';
 
 void main() {
   group('MerkleTree Tests', () {

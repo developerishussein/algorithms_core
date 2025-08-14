@@ -426,7 +426,7 @@ class MerkleTree<T> {
   /// Computes hash for data item
   String _computeHash(T data) {
     final dataString = data.toString() + _salt;
-    return hashFunction(data);
+    return hashFunction(dataString as T);
   }
 
   /// Combines two hashes (left + right)
