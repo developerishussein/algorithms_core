@@ -144,7 +144,6 @@ export 'tree_algorithms/convert_sorted_array_to_bst.dart';
 export 'tree_algorithms/flatten_binary_tree_to_linked_list.dart';
 export 'tree_algorithms/lowest_common_ancestor_no_bst.dart'
     hide lowestCommonAncestor;
-
 // Linked List algorithms
 export 'linked_list_algorithms/linked_list_node.dart';
 export 'linked_list_algorithms/doubly_linked_list_node.dart';
@@ -218,6 +217,11 @@ export 'ml_algorithms/lstm.dart';
 export 'ml_algorithms/gru.dart';
 export 'ml_algorithms/transformer.dart';
 export 'ml_algorithms/gan.dart';
+export 'ml_algorithms/simulated_annealing.dart';
+export 'ml_algorithms/genetic_algorithm.dart';
+export 'ml_algorithms/particle_swarm.dart';
+export 'ml_algorithms/bayesian_optimization.dart';
+export 'ml_algorithms/mdp.dart';
 // Reinforcement Learning algorithms
 export 'ml_algorithms/q_learning.dart';
 export 'ml_algorithms/dqn.dart';
