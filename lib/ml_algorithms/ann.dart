@@ -25,10 +25,12 @@ class ANN {
   final int epochs;
   final double lr;
   final Random _rand;
+
   /// history of loss values (one entry per epoch)
   final List<double> lossHistory = [];
 
-  ANN({required this.layers, this.epochs = 100, this.lr = 0.01, int? seed}) : _rand = seed != null ? Random(seed) : Random() {
+  ANN({required this.layers, this.epochs = 100, this.lr = 0.01, int? seed})
+    : _rand = seed != null ? Random(seed) : Random() {
     if (layers.length < 2) {
       throw ArgumentError('layers must include input and output sizes');
     }
@@ -37,11 +39,11 @@ class ANN {
   // weights[layer][i][j] -> weight connecting node j in previous layer to node i in this layer
   late List<List<List<double>>> weights;
   late List<List<double>> biases;
-  var _inited = false;
+  bool _inited = false;
   double? lastLoss;
 
   void _initParams() {
-    rand() => _rand.nextDouble();
+    double rand() => _rand.nextDouble();
     weights = [];
     biases = [];
     for (var l = 1; l < layers.length; l++) {
@@ -80,11 +82,10 @@ class ANN {
           }
           z[i] = s;
         }
-        // activation
         if (l == weights.length - 1) {
-          a = z.map((v) => _sigmoid(v)).toList();
+          a = z.map(_sigmoid).toList();
         } else {
-          a = z.map((v) => _relu(v)).toList();
+          a = z.map(_relu).toList();
         }
       }
       outputs.add(a);
@@ -105,49 +106,60 @@ class ANN {
 
   /// Serialize model parameters to a Map (JSON-ready).
   Map<String, dynamic> toMap() {
-    return {
-      'layers': layers,
-      'weights': weights,
-      'biases': biases,
-    };
+    return {'layers': layers, 'weights': weights, 'biases': biases};
   }
 
   /// Reconstruct an ANN from a previously-serialized Map.
-  static ANN fromMap(Map<String, dynamic> m, {int? seed, int? epochs, double? lr}) {
+  static ANN fromMap(
+    Map<String, dynamic> m, {
+    int? seed,
+    int? epochs,
+    double? lr,
+  }) {
     final layers = List<int>.from(m['layers'] as List);
-    final model = ANN(layers: layers, epochs: epochs ?? 100, lr: lr ?? 0.01, seed: seed);
-    // materialize weights and biases
+    final model = ANN(
+      layers: layers,
+      epochs: epochs ?? 100,
+      lr: lr ?? 0.01,
+      seed: seed,
+    );
     final rawW = m['weights'] as List;
-    model.weights = rawW
-        .map((layer) => (layer as List).map((row) => List<double>.from(row as List)).toList())
-        .toList();
+    model.weights =
+        rawW
+            .map(
+              (layer) =>
+                  (layer as List)
+                      .map((row) => List<double>.from(row as List))
+                      .toList(),
+            )
+            .toList();
     final rawB = m['biases'] as List;
     model.biases = rawB.map((b) => List<double>.from(b as List)).toList();
     model._inited = true;
     return model;
   }
 
-  /// Train the network.
-  ///
-  /// Optional arguments:
-  /// - batchSize: if null or >= n, full-batch; otherwise uses mini-batches.
-  /// - verbose: if true, prints epoch loss.
-  /// - optimizer: 'sgd' (default), 'momentum', or 'adam'.
-  void fit(List<List<double>> X, List<List<double>> Y,
-      {int? batchSize,
-      bool verbose = false,
-      String optimizer = 'sgd',
-      double momentum = 0.9,
-      double beta1 = 0.9,
-      double beta2 = 0.999,
-      double epsilon = 1e-8,
-      // l2 regularization (weight decay)
-      double l2 = 0.0,
-      // learning rate schedule: 'constant', 'step', 'exp'
-      String lrSchedule = 'constant',
-      int stepSize = 10,
-      double stepDecay = 0.5,
-      double expDecay = 0.99}) {
+  /// Convenience training wrapper that calls the main fit implementation.
+  /// (This class intentionally exposes a single training API.)
+  void fit(
+    List<List<double>> X,
+    List<List<double>> Y, {
+    int? batchSize,
+    bool verbose = false,
+    String optimizer = 'sgd',
+    double momentum = 0.9,
+    double beta1 = 0.9,
+    double beta2 = 0.999,
+    double epsilon = 1e-8,
+    // l2 regularization (weight decay)
+    double l2 = 0.0,
+    // learning rate schedule: 'constant', 'step', 'exp'
+    String lrSchedule = 'constant',
+    int stepSize = 10,
+    double stepDecay = 0.5,
+    double expDecay = 0.99,
+    int epochsOverride = -1,
+  }) {
     if (X.isEmpty) throw ArgumentError('Empty dataset');
     if (X.length != Y.length) {
       throw ArgumentError('X and Y must have same number of rows');
@@ -155,6 +167,7 @@ class ANN {
     _initParams();
     final n = X.length;
     final useBatch = (batchSize == null || batchSize >= n) ? n : batchSize;
+    final int runEpochs = epochsOverride > 0 ? epochsOverride : epochs;
 
     // optimizer state (for momentum/adam)
     List<List<List<double>>> vW = [];
@@ -168,19 +181,34 @@ class ANN {
     // initialize optimizer accumulators
     if (optimizer == 'momentum') {
       for (var l = 0; l < weights.length; l++) {
-        vW.add(List.generate(weights[l].length, (_) => List<double>.filled(weights[l][0].length, 0.0)));
+        vW.add(
+          List.generate(
+            weights[l].length,
+            (_) => List<double>.filled(weights[l][0].length, 0.0),
+          ),
+        );
         vB.add(List<double>.filled(biases[l].length, 0.0));
       }
     } else if (optimizer == 'adam') {
       for (var l = 0; l < weights.length; l++) {
-        mW.add(List.generate(weights[l].length, (_) => List<double>.filled(weights[l][0].length, 0.0)));
-        vAdamW.add(List.generate(weights[l].length, (_) => List<double>.filled(weights[l][0].length, 0.0)));
+        mW.add(
+          List.generate(
+            weights[l].length,
+            (_) => List<double>.filled(weights[l][0].length, 0.0),
+          ),
+        );
+        vAdamW.add(
+          List.generate(
+            weights[l].length,
+            (_) => List<double>.filled(weights[l][0].length, 0.0),
+          ),
+        );
         mB.add(List<double>.filled(biases[l].length, 0.0));
         vAdamB.add(List<double>.filled(biases[l].length, 0.0));
       }
     }
 
-    for (var epoch = 0; epoch < epochs; epoch++) {
+    for (var epoch = 0; epoch < runEpochs; epoch++) {
       // compute current learning rate based on schedule
       double currentLr = lr;
       if (lrSchedule == 'step') {
@@ -188,11 +216,10 @@ class ANN {
       } else if (lrSchedule == 'exp') {
         currentLr = lr * pow(expDecay, epoch);
       }
-      // forward for all examples (batch gradient descent)
-      // We'll perform mini-batch training: create shuffled indices
+
+      // create shuffled indices for mini-batching
       final indices = List<int>.generate(n, (i) => i);
       if (useBatch < n) {
-        // shuffle
         for (var i = indices.length - 1; i > 0; i--) {
           final j = _rand.nextInt(i + 1);
           final tmp = indices[i];
@@ -204,6 +231,7 @@ class ANN {
       for (var batchStart = 0; batchStart < n; batchStart += useBatch) {
         final batchEnd = (batchStart + useBatch).clamp(0, n);
         final bsize = batchEnd - batchStart;
+        if (bsize <= 0) continue;
 
         // prepare batch activations and preacts
         final activations = <List<List<double>>>[];
@@ -227,9 +255,9 @@ class ANN {
             }
             pres.add(z);
             if (l == weights.length - 1) {
-              a = z.map((v) => _sigmoid(v)).toList();
+              a = z.map(_sigmoid).toList();
             } else {
-              a = z.map((v) => _relu(v)).toList();
+              a = z.map(_relu).toList();
             }
             acts.add(a);
           }
@@ -239,12 +267,16 @@ class ANN {
 
         // compute gradients for batch
         final gradW = List.generate(
-            weights.length,
-            (l) => List.generate(
-                weights[l].length,
-                (_) => List<double>.filled(weights[l][0].length, 0.0)));
+          weights.length,
+          (l) => List.generate(
+            weights[l].length,
+            (_) => List<double>.filled(weights[l][0].length, 0.0),
+          ),
+        );
         final gradB = List.generate(
-            biases.length, (l) => List<double>.filled(biases[l].length, 0.0));
+          biases.length,
+          (l) => List<double>.filled(biases[l].length, 0.0),
+        );
 
         for (var bi = 0; bi < activations.length; bi++) {
           final idx = indices[batchStart + bi];
@@ -278,7 +310,6 @@ class ANN {
               curDelta = nextDelta;
             }
           }
-          // processed counter removed
         }
 
         // average gradients over batch
@@ -307,7 +338,9 @@ class ANN {
           for (var l = 0; l < weights.length; l++) {
             for (var iOut = 0; iOut < weights[l].length; iOut++) {
               for (var iIn = 0; iIn < weights[l][iOut].length; iIn++) {
-                vW[l][iOut][iIn] = momentum * vW[l][iOut][iIn] + currentLr * gradW[l][iOut][iIn];
+                vW[l][iOut][iIn] =
+                    momentum * vW[l][iOut][iIn] +
+                    currentLr * gradW[l][iOut][iIn];
                 weights[l][iOut][iIn] -= vW[l][iOut][iIn];
                 if (l2 > 0) weights[l][iOut][iIn] *= (1 - currentLr * l2);
               }
@@ -322,10 +355,12 @@ class ANN {
               for (var iIn = 0; iIn < weights[l][iOut].length; iIn++) {
                 final g = gradW[l][iOut][iIn];
                 mW[l][iOut][iIn] = beta1 * mW[l][iOut][iIn] + (1 - beta1) * g;
-                vAdamW[l][iOut][iIn] = beta2 * vAdamW[l][iOut][iIn] + (1 - beta2) * g * g;
+                vAdamW[l][iOut][iIn] =
+                    beta2 * vAdamW[l][iOut][iIn] + (1 - beta2) * g * g;
                 final mHat = mW[l][iOut][iIn] / (1 - pow(beta1, t));
                 final vHat = vAdamW[l][iOut][iIn] / (1 - pow(beta2, t));
-                weights[l][iOut][iIn] -= currentLr * mHat / (sqrt(vHat) + epsilon);
+                weights[l][iOut][iIn] -=
+                    currentLr * mHat / (sqrt(vHat) + epsilon);
                 if (l2 > 0) weights[l][iOut][iIn] *= (1 - currentLr * l2);
               }
               final gb = gradB[l][iOut];
@@ -341,28 +376,34 @@ class ANN {
         }
       }
 
-  // compute epoch loss and store (mean over samples) using helper
-  lastLoss = _mseLoss(predict(X), Y);
+      // compute epoch loss and store (mean over samples) using helper
+      lastLoss = _mseLoss(predict(X), Y);
       lossHistory.add(lastLoss!);
       if (verbose) print('epoch=$epoch loss=$lastLoss');
     }
   }
 
   /// Asynchronous wrapper that runs `fit` in a Future (not in a separate isolate).
-  Future<void> fitAsync(List<List<double>> X, List<List<double>> Y,
-      {int? batchSize,
-      bool verbose = false,
-      String optimizer = 'sgd',
-      double momentum = 0.9,
-      double beta1 = 0.9,
-      double beta2 = 0.999,
-      double epsilon = 1e-8,
-      double l2 = 0.0,
-      String lrSchedule = 'constant',
-      int stepSize = 10,
-      double stepDecay = 0.5,
-      double expDecay = 0.99}) {
-    return Future(() => fit(X, Y,
+  Future<void> fitAsync(
+    List<List<double>> X,
+    List<List<double>> Y, {
+    int? batchSize,
+    bool verbose = false,
+    String optimizer = 'sgd',
+    double momentum = 0.9,
+    double beta1 = 0.9,
+    double beta2 = 0.999,
+    double epsilon = 1e-8,
+    double l2 = 0.0,
+    String lrSchedule = 'constant',
+    int stepSize = 10,
+    double stepDecay = 0.5,
+    double expDecay = 0.99,
+  }) {
+    return Future(
+      () => fit(
+        X,
+        Y,
         batchSize: batchSize,
         verbose: verbose,
         optimizer: optimizer,
@@ -374,7 +415,9 @@ class ANN {
         lrSchedule: lrSchedule,
         stepSize: stepSize,
         stepDecay: stepDecay,
-        expDecay: expDecay));
+        expDecay: expDecay,
+      ),
+    );
   }
 
   /// Return a simple params map (weights and biases) without other metadata.
@@ -395,9 +438,25 @@ class ANN {
     await f.writeAsString(toJson());
   }
 
-  static Future<ANN> loadFromFile(String path, {int? seed, int? epochs, double? lr}) async {
+  static Future<ANN> loadFromFile(
+    String path, {
+    int? seed,
+    int? epochs,
+    double? lr,
+  }) async {
     final f = File(path);
     final s = await f.readAsString();
     return fromJson(s, seed: seed, epochs: epochs, lr: lr);
+  }
+
+  /// Public utility methods
+  void markInitialized() {
+    _inited = true;
+  }
+
+  void applyParamsFrom(ANN other) {
+    weights = other.weights;
+    biases = other.biases;
+    _inited = true;
   }
 }

@@ -218,6 +218,14 @@ export 'ml_algorithms/lstm.dart';
 export 'ml_algorithms/gru.dart';
 export 'ml_algorithms/transformer.dart';
 export 'ml_algorithms/gan.dart';
+// Reinforcement Learning algorithms
+export 'ml_algorithms/q_learning.dart';
+export 'ml_algorithms/dqn.dart';
+export 'ml_algorithms/sarsa.dart';
+export 'ml_algorithms/policy_gradient.dart';
+export 'ml_algorithms/actor_critic.dart';
+export 'ml_algorithms/ppo.dart';
+export 'ml_algorithms/mcts.dart';
 
 // Backtracking Algorithms
 export 'backtracking_algorithms/n_queens.dart';
