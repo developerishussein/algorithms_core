@@ -269,3 +269,15 @@ export 'list_advanced_sorts/stooge_sort.dart';
 export 'list_advanced_sorts/quickselect.dart';
 export 'list_advanced_sorts/lis_binary_search.dart';
 export 'list_advanced_sorts/max_product_subarray.dart';
+
+// Consensus algorithms
+export 'consensus_algorithms/proof_of_work.dart';
+export 'consensus_algorithms/proof_of_stake.dart';
+export 'consensus_algorithms/delegated_proof_of_stake.dart';
+export 'consensus_algorithms/proof_of_authority.dart';
+export 'consensus_algorithms/proof_of_burn.dart';
+export 'consensus_algorithms/proof_of_capacity.dart';
+export 'consensus_algorithms/proof_of_elapsed_time.dart';
+export 'consensus_algorithms/bft.dart';
+export 'consensus_algorithms/pbft.dart';
+export 'consensus_algorithms/fba.dart';
