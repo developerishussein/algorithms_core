@@ -6,7 +6,8 @@ void main() {
   group('GossipProtocol Tests', () {
     group('Basic Operations', () {
       test('Protocol creation', () {
-        final protocol = GossipProtocol<String>.create(isTestMode: true, 
+        final protocol = GossipProtocol<String>.create(
+          isTestMode: true,
           nodeId: 'test_node',
           address: '127.0.0.1',
           port: 8080,
@@ -24,7 +25,8 @@ void main() {
           failureTimeout: Duration(seconds: 10),
         );
 
-        final protocol = GossipProtocol<String>.create(isTestMode: true, 
+        final protocol = GossipProtocol<String>.create(
+          isTestMode: true,
           nodeId: 'custom_node',
           address: '127.0.0.1',
           port: 8081,
@@ -40,7 +42,8 @@ void main() {
       });
 
       test('Protocol start and stop', () {
-        final protocol = GossipProtocol<String>.create(isTestMode: true, 
+        final protocol = GossipProtocol<String>.create(
+          isTestMode: true,
           nodeId: 'start_stop_node',
           address: '127.0.0.1',
           port: 8082,
@@ -56,7 +59,8 @@ void main() {
 
     group('Node Management', () {
       test('Add node to membership', () {
-        final protocol = GossipProtocol<String>.create(isTestMode: true, 
+        final protocol = GossipProtocol<String>.create(
+          isTestMode: true,
           nodeId: 'manager_node',
           address: '127.0.0.1',
           port: 8083,
@@ -69,7 +73,8 @@ void main() {
       });
 
       test('Remove node from membership', () {
-        final protocol = GossipProtocol<String>.create(isTestMode: true, 
+        final protocol = GossipProtocol<String>.create(
+          isTestMode: true,
           nodeId: 'manager_node',
           address: '127.0.0.1',
           port: 8085,
@@ -84,7 +89,8 @@ void main() {
       });
 
       test('Cannot remove self', () {
-        final protocol = GossipProtocol<String>.create(isTestMode: true, 
+        final protocol = GossipProtocol<String>.create(
+          isTestMode: true,
           nodeId: 'self_node',
           address: '127.0.0.1',
           port: 8087,
@@ -120,7 +126,8 @@ void main() {
 
     group('Message Handling', () {
       test('Gossip message creation', () {
-        final protocol = GossipProtocol<String>.create(isTestMode: true, 
+        final protocol = GossipProtocol<String>.create(
+          isTestMode: true,
           nodeId: 'message_node',
           address: '127.0.0.1',
           port: 8089,
@@ -138,7 +145,8 @@ void main() {
       });
 
       test('Message with custom type', () {
-        final protocol = GossipProtocol<String>.create(isTestMode: true, 
+        final protocol = GossipProtocol<String>.create(
+          isTestMode: true,
           nodeId: 'type_node',
           address: '127.0.0.1',
           port: 8090,
@@ -448,7 +456,8 @@ void main() {
 
     group('Streams and Events', () {
       test('Message stream subscription', () async {
-        final protocol = GossipProtocol<String>.create(isTestMode: true, 
+        final protocol = GossipProtocol<String>.create(
+          isTestMode: true,
           nodeId: 'stream_node',
           address: '127.0.0.1',
           port: 8091,
@@ -470,7 +479,8 @@ void main() {
       });
 
       test('Membership stream subscription', () async {
-        final protocol = GossipProtocol<String>.create(isTestMode: true, 
+        final protocol = GossipProtocol<String>.create(
+          isTestMode: true,
           nodeId: 'membership_stream_node',
           address: '127.0.0.1',
           port: 8092,
@@ -494,7 +504,8 @@ void main() {
 
     group('Serialization', () {
       test('Protocol to JSON', () {
-        final protocol = GossipProtocol<String>.create(isTestMode: true, 
+        final protocol = GossipProtocol<String>.create(
+          isTestMode: true,
           nodeId: 'json_protocol',
           address: '127.0.0.1',
           port: 8094,
@@ -517,7 +528,8 @@ void main() {
       });
 
       test('Protocol string representation', () {
-        final protocol = GossipProtocol<String>.create(isTestMode: true, 
+        final protocol = GossipProtocol<String>.create(
+          isTestMode: true,
           nodeId: 'string_protocol',
           address: '127.0.0.1',
           port: 8096,
@@ -535,7 +547,8 @@ void main() {
 
     group('Edge Cases', () {
       test('Empty membership handling', () {
-        final protocol = GossipProtocol<String>.create(isTestMode: true, 
+        final protocol = GossipProtocol<String>.create(
+          isTestMode: true,
           nodeId: 'empty_node',
           address: '127.0.0.1',
           port: 8098,
@@ -546,7 +559,8 @@ void main() {
       });
 
       test('Large message handling', () {
-        final protocol = GossipProtocol<String>.create(isTestMode: true, 
+        final protocol = GossipProtocol<String>.create(
+          isTestMode: true,
           nodeId: 'large_message_node',
           address: '127.0.0.1',
           port: 8099,
@@ -560,7 +574,8 @@ void main() {
       });
 
       test('Special characters in node ID', () {
-        final protocol = GossipProtocol<String>.create(isTestMode: true, 
+        final protocol = GossipProtocol<String>.create(
+          isTestMode: true,
           nodeId: 'special_chars_test',
           address: '127.0.0.1',
           port: 8100,
@@ -571,7 +586,8 @@ void main() {
       });
 
       test('High port numbers', () {
-        final protocol = GossipProtocol<String>.create(isTestMode: true, 
+        final protocol = GossipProtocol<String>.create(
+          isTestMode: true,
           nodeId: 'high_port_node',
           address: '127.0.0.1',
           port: 65535,
@@ -585,7 +601,8 @@ void main() {
       test('Large membership performance', () {
         final startTime = DateTime.now();
 
-        final protocol = GossipProtocol<String>.create(isTestMode: true, 
+        final protocol = GossipProtocol<String>.create(
+          isTestMode: true,
           nodeId: 'perf_node',
           address: '127.0.0.1',
           port: 8101,
@@ -606,7 +623,8 @@ void main() {
       });
 
       test('Message throughput performance', () {
-        final protocol = GossipProtocol<String>.create(isTestMode: true, 
+        final protocol = GossipProtocol<String>.create(
+          isTestMode: true,
           nodeId: 'throughput_node',
           address: '127.0.0.1',
           port: 8103,
