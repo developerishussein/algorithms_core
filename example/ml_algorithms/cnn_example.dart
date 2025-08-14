@@ -24,7 +24,7 @@ void main() {
   final y = [
     [1.0],
   ];
-  final model = CNN(filters: [8, 16], epochs: 1);
+  final model = CNN(height: 3, width: 3, channels: 1, headLayers: [1]);
   model.fit(X, y);
   print(model.predict(X));
 }

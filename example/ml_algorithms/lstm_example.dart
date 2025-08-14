@@ -10,7 +10,7 @@ void main() {
   final y = [
     [1.0],
   ];
-  final model = LSTM(hiddenSize: 8, epochs: 1);
+  final model = LSTM(hiddenSize: 8, inputSize: 2, readoutLayers: [1]);
   model.fit(X, y);
   print(model.predict(X));
 }

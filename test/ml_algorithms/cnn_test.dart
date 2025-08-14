@@ -16,7 +16,7 @@ void main() {
           ],
         ],
       ];
-      final model = CNN(filters: [4]);
+      final model = CNN(height: 2, width: 2, channels: 1, headLayers: [1]);
       final out = model.predict(X);
       expect(out.length, equals(1));
       expect(out[0].length, equals(1));

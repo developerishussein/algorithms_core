@@ -11,26 +11,80 @@
 /// - Errors: throws ArgumentError for invalid inputs
 library;
 
+import 'dart:convert';
+import 'package:algorithms_core/ml_algorithms/ann.dart';
+
+/// Minimal Transformer encoder wrapper. We provide a tiny, testable
+/// abstraction: token embeddings -> mean pooling -> MLP head (ANN).
 class Transformer {
+  final int vocabSize;
   final int dModel;
   final int heads;
-  final int epochs;
-  final double lr;
+  final ANN head;
+
   Transformer({
+    required this.vocabSize,
     this.dModel = 64,
     this.heads = 4,
-    this.epochs = 10,
-    this.lr = 0.001,
-  }) {
-    if (dModel <= 0) throw ArgumentError('dModel must be positive');
-    if (heads <= 0) throw ArgumentError('heads must be positive');
+    required List<int> headLayers,
+    int? seed,
+  }) : head = ANN(layers: headLayers, seed: seed) {
+    if (vocabSize <= 0) throw ArgumentError('vocabSize > 0');
+    if (dModel <= 0) throw ArgumentError('dModel > 0');
+    if (headLayers.isEmpty) throw ArgumentError('headLayers required');
   }
 
-  void fit(List<List<int>> X, List<List<double>> Y) {
-    // placeholder: attention, positional encodings, MLP head
+  // simple embedding bag: map tokens to one-hot-like embeddings (very small)
+  List<double> _embedAndPool(List<int> tokens) {
+    final emb = List<double>.filled(dModel, 0.0);
+    if (tokens.isEmpty) return emb;
+    for (var i = 0; i < tokens.length; i++) {
+      final t = tokens[i] % dModel;
+      emb[t] += 1.0;
+    }
+    // normalize
+    for (var i = 0; i < emb.length; i++) {
+      emb[i] /= tokens.length;
+    }
+    return emb;
+  }
+
+  void fit(
+    List<List<int>> X,
+    List<List<double>> Y, {
+    int? batchSize,
+    bool verbose = false,
+  }) {
+    final xs = X.map((toks) => _embedAndPool(toks)).toList();
+    head.fit(xs, Y, batchSize: batchSize, verbose: verbose);
   }
 
   List<List<double>> predict(List<List<int>> X) {
-    return List.generate(X.length, (_) => List<double>.filled(dModel, 0.0));
+    final xs = X.map((toks) => _embedAndPool(toks)).toList();
+    return head.predict(xs);
   }
+
+  Map<String, dynamic> toMap() => {
+    'vocabSize': vocabSize,
+    'dModel': dModel,
+    'heads': heads,
+    'head': head.toMap(),
+  };
+
+  static Transformer fromMap(Map<String, dynamic> m, {int? seed}) {
+    final h = ANN.fromMap(m['head'] as Map<String, dynamic>, seed: seed);
+    final model = Transformer(
+      vocabSize: m['vocabSize'] as int,
+      dModel: m['dModel'] as int,
+      heads: m['heads'] as int,
+      headLayers: h.layers,
+      seed: seed,
+    );
+    model.head.applyParamsFrom(h);
+    return model;
+  }
+
+  String toJson() => jsonEncode(toMap());
+  static Transformer fromJson(String s, {int? seed}) =>
+      fromMap(jsonDecode(s) as Map<String, dynamic>, seed: seed);
 }

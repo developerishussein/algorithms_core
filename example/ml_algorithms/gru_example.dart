@@ -10,7 +10,7 @@ void main() {
   final y = [
     [1.0],
   ];
-  final model = GRU(hiddenSize: 6, epochs: 1);
+  final model = GRU(inputSize: 2, hiddenSize: 6, readoutLayers: [1]);
   model.fit(X, y);
   print(model.predict(X));
 }

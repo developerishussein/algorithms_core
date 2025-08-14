@@ -10,7 +10,7 @@ void main() {
   final y = [
     [1.0],
   ];
-  final model = RNN(hiddenSize: 4, epochs: 1);
+  final model = RNN(hiddenSize: 4, inputSize: 2, readoutLayers: [1]);
   model.fit(X, y);
   print(model.predict(X));
 }

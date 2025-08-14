@@ -10,7 +10,7 @@ void main() {
           [0.2, 0.1],
         ],
       ];
-      final model = LSTM(hiddenSize: 5);
+      final model = LSTM(inputSize: 2, hiddenSize: 5, readoutLayers: [1]);
       final out = model.predict(X);
       expect(out.length, equals(1));
       expect(out[0].length, equals(5));

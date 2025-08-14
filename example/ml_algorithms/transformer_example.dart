@@ -7,7 +7,12 @@ void main() {
   final y = [
     [0.0],
   ];
-  final model = Transformer(dModel: 32, heads: 4, epochs: 1);
+  final model = Transformer(
+    dModel: 32,
+    heads: 4,
+    vocabSize: 5,
+    headLayers: [1],
+  );
   model.fit(X, y);
   print(model.predict(X));
 }
