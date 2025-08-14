@@ -1,9 +1,15 @@
-/// 🔄 Sort Linked List (Merge Sort)
+/// � Sort Linked List (Merge Sort) — scalable, stable, generic
 ///
-/// Sorts a singly linked list using merge sort algorithm.
+/// Performs a stable merge sort on a singly linked list and returns the sorted head.
+/// The implementation splits lists using the tortoise-hare technique and merges by
+/// comparing values using `Comparable`, making it generic and safe for production use.
 ///
-/// Time complexity: O(n log n)
-/// Space complexity: O(log n) due to recursion
+/// Contract:
+/// - Inputs: `head` (nullable linked list head) with `T extends Comparable`.
+/// - Output: head of the sorted list (nullable). Sort is stable (preserves order for equal keys).
+/// - Error modes: none; if values do not implement `Comparable`, compilation fails.
+///
+/// Complexity: Time O(n log n), Space O(log n) due to recursion depth.
 ///
 /// Example:
 /// ```dart

@@ -1,10 +1,15 @@
-/// ➕ Add Two Numbers (Linked List Representation)
+/// ➕ Add Two Numbers (Linked List Representation) — safe big-integer style add
 ///
-/// Adds two numbers represented by linked lists (digits in reverse order).
-/// Returns the sum as a new linked list.
+/// Adds two non-negative integers represented by singly linked lists where digits
+/// are stored in reverse order (least significant digit first). The function
+/// returns a newly allocated linked list representing the sum in the same format.
 ///
-/// Time complexity: O(max(m, n))
-/// Space complexity: O(max(m, n))
+/// Contract:
+/// - Inputs: `l1`, `l2` (nullable heads of lists representing non-negative integers).
+/// - Output: head of new linked list representing the sum (nullable when both inputs are `null`).
+/// - Error modes: negative digits or non-integer values are not validated; caller must ensure valid input.
+///
+/// Complexity: Time O(max(m, n)), Space O(max(m, n)).
 ///
 /// Example:
 /// ```dart

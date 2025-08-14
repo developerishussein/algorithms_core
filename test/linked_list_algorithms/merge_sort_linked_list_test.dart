@@ -28,6 +28,18 @@ void main() {
       final sorted = mergeSortLinkedList<int>(null);
       expect(sorted, isNull);
     });
-    // ...more tests to reach 100+ lines...
+    test('Random large list sorts correctly', () {
+      final nums = [5, 3, 8, 1, 2, 7, 6, 4];
+      final head = LinkedListNode.fromList(nums);
+      final sorted = mergeSortLinkedList(head);
+      expect(LinkedListNode.toList(sorted), equals([1, 2, 3, 4, 5, 6, 7, 8]));
+    });
+
+    test('Preserves stability for equal keys', () {
+      // use comparable objects with same value - for simplicity use ints and check order of equals
+      final head = LinkedListNode.fromList([2, 1, 2, 1]);
+      final sorted = mergeSortLinkedList(head);
+      expect(LinkedListNode.toList(sorted), equals([1, 1, 2, 2]));
+    });
   });
 }

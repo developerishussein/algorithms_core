@@ -181,6 +181,39 @@ export 'dp_algorithms/house_robber.dart';
 export 'dp_algorithms/jump_game.dart';
 export 'dp_algorithms/alternating_subsequences.dart';
 export 'dp_algorithms/rod_cutting.dart';
+// New DP algorithms
+export 'dp_algorithms/minimum_path_sum.dart';
+export 'dp_algorithms/unique_paths_with_obstacles.dart';
+export 'dp_algorithms/decode_ways.dart';
+export 'dp_algorithms/interleaving_string.dart';
+export 'dp_algorithms/coin_change_bottom_up.dart';
+export 'dp_algorithms/paint_house.dart';
+export 'dp_algorithms/burst_balloons.dart';
+export 'dp_algorithms/longest_bitonic_subsequence.dart';
+export 'dp_algorithms/matrix_chain_multiplication.dart';
+export 'dp_algorithms/count_palindromic_subsequences.dart';
+export 'dp_algorithms/min_cuts_palindrome_partitioning.dart';
+export 'dp_algorithms/max_sum_increasing_subsequence.dart';
+export 'dp_algorithms/cherry_pickup.dart';
+export 'dp_algorithms/wildcard_matching.dart';
+export 'dp_algorithms/regex_matching.dart';
+
+// Machine Learning algorithms
+export 'ml_algorithms/linear_regression.dart';
+export 'ml_algorithms/logistic_regression.dart';
+export 'ml_algorithms/decision_tree.dart';
+export 'ml_algorithms/random_forest.dart';
+export 'ml_algorithms/svm.dart';
+export 'ml_algorithms/knn.dart';
+export 'ml_algorithms/naive_bayes.dart';
+export 'ml_algorithms/gradient_boosting.dart';
+export 'ml_algorithms/xgboost_like.dart';
+export 'ml_algorithms/gradient_boosting_classifier.dart';
+export 'ml_algorithms/lightgbm_like.dart';
+export 'ml_algorithms/catboost_like.dart';
+export 'ml_algorithms/ann.dart';
+export 'ml_algorithms/cnn.dart';
+export 'ml_algorithms/rnn.dart';
 
 // Backtracking Algorithms
 export 'backtracking_algorithms/n_queens.dart';

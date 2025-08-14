@@ -1,9 +1,15 @@
-/// 🔄 Reverse Nodes in K-Group
+/// � Reverse Nodes in K-Group — in-place group-wise reversal
 ///
-/// Reverses nodes of a linked list in groups of k.
+/// Reverses nodes of a singly linked list in contiguous groups of size `k`.
+/// If the final group has fewer than `k` nodes, it remains in original order.
+/// The implementation reverses pointers in-place for O(1) additional space.
 ///
-/// Time complexity: O(n)
-/// Space complexity: O(1)
+/// Contract:
+/// - Inputs: `head` (nullable), `k` (positive integer).
+/// - Output: new head of the transformed list (nullable). If `k <= 1`, returns original head.
+/// - Error modes: non-positive `k` will return the original list unchanged.
+///
+/// Complexity: Time O(n), Space O(1).
 ///
 /// Example:
 /// ```dart

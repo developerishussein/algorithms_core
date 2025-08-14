@@ -1,9 +1,16 @@
-/// 🔄 Swap Nodes in Pairs
+/// � Swap Nodes in Pairs — safe adjacent node swapping
 ///
-/// Swaps every two adjacent nodes in a singly linked list.
+/// Performs an in-place swap of every two adjacent nodes in a singly linked list
+/// and returns the new head. The algorithm preserves node objects and only
+/// adjusts pointers (no value-swapping), making it suitable for nodes with
+/// complex payloads.
 ///
-/// Time complexity: O(n)
-/// Space complexity: O(1)
+/// Contract:
+/// - Inputs: `head` (nullable linked list head).
+/// - Output: new head (nullable). If the list has odd length, the final node is left as-is.
+/// - Error modes: none; `null` input returns `null`.
+///
+/// Complexity: Time O(n), Space O(1).
 ///
 /// Example:
 /// ```dart
@@ -16,7 +23,8 @@ library;
 import 'linked_list_node.dart';
 
 LinkedListNode<T>? swapNodesInPairs<T>(LinkedListNode<T>? head) {
-  final dummy = LinkedListNode<T>(head?.value as T);
+  if (head == null) return null;
+  final dummy = LinkedListNode<T>(head.value);
   dummy.next = head;
   LinkedListNode<T>? prev = dummy;
   while (prev!.next != null && prev.next!.next != null) {

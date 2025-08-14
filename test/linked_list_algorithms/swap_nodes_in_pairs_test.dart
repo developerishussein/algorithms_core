@@ -23,6 +23,21 @@ void main() {
       final swapped = swapNodesInPairs<int>(null);
       expect(swapped, isNull);
     });
-    // ...more tests to reach 100+ lines...
+    test('Large list behavior sanity', () {
+      final head = LinkedListNode.fromList(List<int>.generate(101, (i) => i));
+      final swapped = swapNodesInPairs(head);
+      final out = LinkedListNode.toList(swapped);
+      // check pairwise swap property for first few
+      expect(out[0], equals(1));
+      expect(out[1], equals(0));
+      expect(out.length, equals(101));
+    });
+    test('Idempotent for k=0-like operation (no-op semantics)', () {
+      // swapNodesInPairs should be deterministic; calling twice returns original ordering for even lists
+      final head = LinkedListNode.fromList([1, 2, 3, 4]);
+      final once = swapNodesInPairs(head);
+      final twice = swapNodesInPairs(once);
+      expect(LinkedListNode.toList(twice), equals([1, 2, 3, 4]));
+    });
   });
 }

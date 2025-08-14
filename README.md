@@ -14,7 +14,7 @@ Environment: Dart SDK ≥ 3.7.2 (see `pubspec.yaml`).
 
 ---
 
-## 📦 Install ## algorithms core
+## 📦 Install  algorithms core
 
 Use in your Dart or Flutter project.
 
@@ -32,7 +32,7 @@ flutter pub add algorithms_core
 
 ---
 
-## 🚀 Quick start ## algorithm
+## 🚀 Quick start  algorithm
 
 ```dart
 import 'package:algorithms_core/algorithms_core.dart';
@@ -204,6 +204,7 @@ Open a PR with a brief description and test cases.
 ## 📄 License
 
 MIT. See `LICENSE`.
+---
 ## The most important sections of the library algorithms_core 
 ## backtracking algorithms
 ## Tree.md Important to know the library structure algorithms core
@@ -212,3 +213,4 @@ MIT. See `LICENSE`.
 ## dp algorithms
 ## list advanced sorts
 ## linked list algorithm
+---

@@ -28,6 +28,22 @@ void main() {
       final reversed = reverseNodesInKGroup<int>(null, 2);
       expect(reversed, isNull);
     });
-    // ...more tests to reach 100+ lines...
+    test('k = 1 returns same list', () {
+      final head = LinkedListNode.fromList([1, 2, 3]);
+      final res = reverseNodesInKGroup(head, 1);
+      expect(LinkedListNode.toList(res), equals([1, 2, 3]));
+    });
+
+    test('k larger than length leaves list unchanged', () {
+      final head = LinkedListNode.fromList([1, 2, 3]);
+      final res = reverseNodesInKGroup(head, 5);
+      expect(LinkedListNode.toList(res), equals([1, 2, 3]));
+    });
+
+    test('Odd-length list with k=2 leaves last element', () {
+      final head = LinkedListNode.fromList([1, 2, 3, 4, 5]);
+      final res = reverseNodesInKGroup(head, 2);
+      expect(LinkedListNode.toList(res), equals([2, 1, 4, 3, 5]));
+    });
   });
 }

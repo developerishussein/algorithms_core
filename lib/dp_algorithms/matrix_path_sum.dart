@@ -6,7 +6,9 @@
 /// Time Complexity: O(m * n)
 /// Space Complexity: O(m * n)
 int minPathSum(List<List<int>> grid) {
-  if (grid.isEmpty || grid[0].isEmpty) return 0;
+  if (grid.isEmpty || grid[0].isEmpty) {
+    throw ArgumentError('grid must be non-empty');
+  }
   final m = grid.length, n = grid[0].length;
   final dp = List.generate(m, (i) => List<int>.filled(n, 0));
   dp[0][0] = grid[0][0];

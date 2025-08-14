@@ -1,9 +1,15 @@
-/// 🔄 Rotate Linked List
+/// � Rotate Linked List — robust, generic implementation
 ///
-/// Rotates a singly linked list to the right by k places.
+/// Rotates a singly linked list to the right by `k` places and returns the new head.
+/// The function operates in-place (O(1) extra space) and runs in a single pass to compute
+/// length plus a second pass to rewire pointers when necessary.
 ///
-/// Time complexity: O(n)
-/// Space complexity: O(1)
+/// Contract:
+/// - Inputs: `head` (nullable linked list head), `k` (non-negative rotation count).
+/// - Output: new head of the rotated list (nullable). Returns `null` when `head` is `null`.
+/// - Error modes: negative `k` is treated as invalid (caller should provide non-negative `k`).
+///
+/// Complexity: Time O(n), Space O(1).
 ///
 /// Example:
 /// ```dart

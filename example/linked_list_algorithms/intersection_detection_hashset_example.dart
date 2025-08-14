@@ -1,0 +1,9 @@
+import 'package:algorithms_core/algorithms_core.dart';
+
+void main() {
+  final a = LinkedListNode.fromList<int>([1, 2, 3]);
+  final b = LinkedListNode.fromList<int>([4, 5]);
+  b!.next!.next = a!.next; // intersection at node with value 2
+  final intersection = intersectionDetectionHashSet(a, b);
+  print('Intersection value => ${intersection?.value}');
+}

@@ -1,9 +1,15 @@
-/// 🔄 Remove Duplicates from Sorted Linked List
+/// 🧹 Remove Duplicates from Sorted Linked List — in-place deduplication
 ///
-/// Removes all duplicates from a sorted singly linked list in-place.
+/// Removes duplicate consecutive values from a sorted singly linked list by
+/// rewiring `next` pointers. The function is generic and does not allocate new
+/// nodes; it relies on equality (`==`) for value comparisons.
 ///
-/// Time complexity: O(n)
-/// Space complexity: O(1)
+/// Contract:
+/// - Inputs: `head` (nullable linked list head) where values are sorted in non-decreasing order.
+/// - Output: head of the deduplicated list (nullable). If `head` is `null`, returns `null`.
+/// - Error modes: behavior is undefined if the list is unsorted.
+///
+/// Complexity: Time O(n), Space O(1).
 ///
 /// Example:
 /// ```dart

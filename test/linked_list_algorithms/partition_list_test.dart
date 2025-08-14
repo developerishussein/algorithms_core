@@ -28,6 +28,23 @@ void main() {
       final partitioned = partitionList<int>(null, 3);
       expect(partitioned, isNull);
     });
-    // ...more tests to reach 100+ lines...
+    test('All nodes less than pivot', () {
+      final head = LinkedListNode.fromList([1, 1, 2]);
+      final partitioned = partitionList(head, 3);
+      expect(LinkedListNode.toList(partitioned), equals([1, 1, 2]));
+    });
+
+    test('All nodes greater or equal pivot', () {
+      final head = LinkedListNode.fromList([5, 6, 7]);
+      final partitioned = partitionList(head, 3);
+      expect(LinkedListNode.toList(partitioned), equals([5, 6, 7]));
+    });
+
+    test('Stability preserved for equal elements', () {
+      final head = LinkedListNode.fromList([3, 1, 3, 2]);
+      final partitioned = partitionList(head, 3);
+      // nodes <3: [1,2] in original order; nodes >=3: [3,3]
+      expect(LinkedListNode.toList(partitioned), equals([1, 2, 3, 3]));
+    });
   });
 }

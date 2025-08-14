@@ -1,10 +1,15 @@
-/// 🔢 Convert Binary Number in Linked List to Integer
+/// 🔢 Convert Binary Number in Linked List to Integer — MSB-first parsing
 ///
-/// Converts a binary number represented as a linked list to an integer.
-/// The most significant bit comes first.
+/// Parses a binary number represented as a singly linked list where the most
+/// significant bit appears first and returns its integer value. The implementation
+/// uses left-shift accumulation to avoid string conversion and minimize allocations.
 ///
-/// Time complexity: O(n)
-/// Space complexity: O(1)
+/// Contract:
+/// - Inputs: `head` (nullable linked list of `int` values 0 or 1).
+/// - Output: integer value represented by the binary digits. Returns 0 for `null`.
+/// - Error modes: values other than 0/1 are not validated and may produce incorrect results.
+///
+/// Complexity: Time O(n), Space O(1).
 ///
 /// Example:
 /// ```dart

@@ -28,6 +28,16 @@ void main() {
       final value = convertBinaryLinkedListToInt(null);
       expect(value, equals(0));
     });
-    // ...more tests to reach 100+ lines...
+    test('Empty list returns 0', () {
+      final v = convertBinaryLinkedListToInt(null);
+      expect(v, equals(0));
+    });
+
+    test('Long binary sequence', () {
+      final head = LinkedListNode.fromList([1, 0, 1, 1, 0, 1]);
+      final v = convertBinaryLinkedListToInt(head);
+      // 101101 in binary = 45
+      expect(v, equals(45));
+    });
   });
 }

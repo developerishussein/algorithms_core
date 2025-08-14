@@ -28,6 +28,16 @@ void main() {
       final deduped = removeDuplicatesSortedList<int>(null);
       expect(deduped, isNull);
     });
-    // ...more tests to reach 100+ lines...
+    test('All duplicates collapse to single', () {
+      final head = LinkedListNode.fromList([1, 1, 1, 1]);
+      final deduped = removeDuplicatesSortedList(head);
+      expect(LinkedListNode.toList(deduped), equals([1]));
+    });
+
+    test('No duplicates stays same', () {
+      final head = LinkedListNode.fromList([1, 2, 3]);
+      final deduped = removeDuplicatesSortedList(head);
+      expect(LinkedListNode.toList(deduped), equals([1, 2, 3]));
+    });
   });
 }

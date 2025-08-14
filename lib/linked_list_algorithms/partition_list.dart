@@ -1,9 +1,15 @@
-/// 🔄 Partition Linked List
+/// � Partition Linked List — stable partition preserving relative order
 ///
-/// Partitions a linked list around a value x, such that all nodes less than x come before nodes greater than or equal to x.
+/// Partitions a singly linked list around a pivot `x` so that nodes with values
+/// less than `x` appear before nodes greater than or equal to `x`. The relative
+/// order of nodes in each partition is preserved (stable partition).
 ///
-/// Time complexity: O(n)
-/// Space complexity: O(1)
+/// Contract:
+/// - Inputs: `head` (nullable linked list head), `x` (pivot value of type Comparable).
+/// - Output: head of partitioned list (nullable). If `head` is `null`, returns `null`.
+/// - Error modes: none; function treats `x` using `compareTo` and requires `T extends Comparable`.
+///
+/// Complexity: Time O(n), Space O(1) (uses constant extra pointers and builds partitions by relinking).
 ///
 /// Example:
 /// ```dart
@@ -19,11 +25,12 @@ LinkedListNode<T>? partitionList<T extends Comparable>(
   LinkedListNode<T>? head,
   T x,
 ) {
+  if (head == null) return null;
   final beforeHead = LinkedListNode<T>(x);
   final afterHead = LinkedListNode<T>(x);
   var before = beforeHead;
   var after = afterHead;
-  var current = head;
+  LinkedListNode<T>? current = head;
   while (current != null) {
     if (current.value.compareTo(x) < 0) {
       before.next = LinkedListNode<T>(current.value);
@@ -34,6 +41,8 @@ LinkedListNode<T>? partitionList<T extends Comparable>(
     }
     current = current.next;
   }
+  // If no elements were less than x, return the after list
+  if (beforeHead.next == null) return afterHead.next;
   before.next = afterHead.next;
   return beforeHead.next;
 }

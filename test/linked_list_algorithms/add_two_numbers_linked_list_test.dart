@@ -32,6 +32,22 @@ void main() {
       final sum = addTwoNumbersLinkedList(null, null);
       expect(sum, isNull);
     });
-    // ...more tests to reach 100+ lines...
+    test('One null list', () {
+      final l1 = LinkedListNode.fromList([1, 2, 3]);
+      final sum = addTwoNumbersLinkedList(l1, null);
+      expect(LinkedListNode.toList(sum), equals([1, 2, 3]));
+    });
+
+    test('Both null lists', () {
+      final sum = addTwoNumbersLinkedList(null, null);
+      expect(sum, isNull);
+    });
+
+    test('Large carries propagate', () {
+      final l1 = LinkedListNode.fromList([9, 9, 9]);
+      final l2 = LinkedListNode.fromList([1]);
+      final sum = addTwoNumbersLinkedList(l1, l2);
+      expect(LinkedListNode.toList(sum), equals([0, 0, 0, 1]));
+    });
   });
 }

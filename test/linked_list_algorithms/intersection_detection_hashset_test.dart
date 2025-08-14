@@ -26,6 +26,16 @@ void main() {
       final intersection = intersectionDetectionHashSet<int>(null, null);
       expect(intersection, isNull);
     });
-    // ...more tests to reach 100+ lines...
+    test('Intersection when one list is contained', () {
+      final a = LinkedListNode.fromList([1, 2, 3, 4]);
+      final b = a!.next!.next; // list b is a suffix starting at 3
+      final intersection = intersectionDetectionHashSet(a, b);
+      expect(intersection, equals(b));
+    });
+
+    test('Both lists null returns null', () {
+      final intersection = intersectionDetectionHashSet<int>(null, null);
+      expect(intersection, isNull);
+    });
   });
 }

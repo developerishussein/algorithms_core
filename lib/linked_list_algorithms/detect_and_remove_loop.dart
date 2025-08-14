@@ -1,10 +1,15 @@
-/// 🔄 Detect and Remove Loop in Linked List
+/// � Detect and Remove Loop in Linked List — Floyd's cycle detection + repair
 ///
-/// Detects a loop in a singly linked list and removes it if present.
-/// Returns true if a loop was found and removed, false otherwise.
+/// Detects a cycle in a singly linked list using Floyd's Tortoise & Hare algorithm
+/// and removes the loop by locating the loop start and severing the connection.
+/// Returns `true` when a cycle was found and removed; otherwise `false`.
 ///
-/// Time complexity: O(n)
-/// Space complexity: O(1)
+/// Contract:
+/// - Inputs: `head` (nullable linked list head).
+/// - Output: boolean indicating whether a loop was found and removed.
+/// - Error modes: none; `null` input returns `false`.
+///
+/// Complexity: Time O(n), Space O(1).
 ///
 /// Example:
 /// ```dart
