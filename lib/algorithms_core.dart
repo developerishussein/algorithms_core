@@ -196,7 +196,6 @@ export 'dp_algorithms/max_sum_increasing_subsequence.dart';
 export 'dp_algorithms/cherry_pickup.dart';
 export 'dp_algorithms/wildcard_matching.dart';
 export 'dp_algorithms/regex_matching.dart';
-
 // Machine Learning algorithms
 export 'ml_algorithms/linear_regression.dart';
 export 'ml_algorithms/logistic_regression.dart';
@@ -230,7 +229,6 @@ export 'ml_algorithms/policy_gradient.dart';
 export 'ml_algorithms/actor_critic.dart';
 export 'ml_algorithms/ppo.dart';
 export 'ml_algorithms/mcts.dart';
-
 // Backtracking Algorithms
 export 'backtracking_algorithms/n_queens.dart';
 export 'backtracking_algorithms/sudoku_solver.dart';
@@ -241,7 +239,6 @@ export 'backtracking_algorithms/combinations.dart';
 export 'backtracking_algorithms/combination_sum.dart';
 export 'backtracking_algorithms/letter_combinations_phone_number.dart';
 export 'backtracking_algorithms/rat_in_a_maze.dart';
-
 // Matrix Algorithms
 export 'matrix_algorithms/flood_fill.dart';
 export 'matrix_algorithms/island_count_dfs.dart';
@@ -252,7 +249,6 @@ export 'matrix_algorithms/path_sum.dart';
 export 'matrix_algorithms/matrix_rotation.dart';
 export 'matrix_algorithms/spiral_traversal.dart';
 export 'matrix_algorithms/surrounded_regions.dart';
-
 // List Advanced Sorts & Selection Algorithms
 export 'list_advanced_sorts/heap_sort.dart';
 export 'list_advanced_sorts/shell_sort.dart';
@@ -269,7 +265,6 @@ export 'list_advanced_sorts/stooge_sort.dart';
 export 'list_advanced_sorts/quickselect.dart';
 export 'list_advanced_sorts/lis_binary_search.dart';
 export 'list_advanced_sorts/max_product_subarray.dart';
-
 // Consensus algorithms
 export 'consensus_algorithms/proof_of_work.dart';
 export 'consensus_algorithms/proof_of_stake.dart';
@@ -281,3 +276,12 @@ export 'consensus_algorithms/proof_of_elapsed_time.dart';
 export 'consensus_algorithms/bft.dart';
 export 'consensus_algorithms/pbft.dart';
 export 'consensus_algorithms/fba.dart';
+// Cryptographic Algorithms
+export 'cryptographic_algorithms/sha256.dart';
+export 'cryptographic_algorithms/ripemd160.dart';
+export 'cryptographic_algorithms/keccak256.dart';
+export 'cryptographic_algorithms/scrypt.dart';
+export 'cryptographic_algorithms/argon2.dart';
+export 'cryptographic_algorithms/ecdsa.dart';
+export 'cryptographic_algorithms/eddsa.dart';
+export 'cryptographic_algorithms/bls_signatures.dart';
