@@ -41,6 +41,8 @@ export 'set_algorithms/superset_check.dart';
 export 'set_algorithms/disjoint_check.dart';
 export 'set_algorithms/list_to_set_preserve_order.dart';
 export 'set_algorithms/multiset_operations.dart';
+// Bloom Filter for High-Performance Data Filtering
+export 'set_algorithms/bloom_filter.dart';
 // map_algorithms
 export 'map_algorithms/frequency_count.dart';
 export 'map_algorithms/group_by_key.dart';
@@ -144,6 +146,8 @@ export 'tree_algorithms/convert_sorted_array_to_bst.dart';
 export 'tree_algorithms/flatten_binary_tree_to_linked_list.dart';
 export 'tree_algorithms/lowest_common_ancestor_no_bst.dart'
     hide lowestCommonAncestor;
+// Merkle Tree for Blockchain and Distributed Systems
+export 'tree_algorithms/merkle_tree.dart';
 // Linked List algorithms
 export 'linked_list_algorithms/linked_list_node.dart';
 export 'linked_list_algorithms/doubly_linked_list_node.dart';
@@ -276,6 +280,8 @@ export 'consensus_algorithms/proof_of_elapsed_time.dart';
 export 'consensus_algorithms/bft.dart';
 export 'consensus_algorithms/pbft.dart';
 export 'consensus_algorithms/fba.dart';
+// Gossip Protocol for Distributed Systems
+export 'consensus_algorithms/gossip_protocol.dart';
 // Cryptographic Algorithms
 export 'cryptographic_algorithms/sha256.dart';
 export 'cryptographic_algorithms/ripemd160.dart';
