@@ -146,7 +146,7 @@ class SHA256 {
     // Pre-allocate hash state to avoid repeated allocations
     final h = List<int>.filled(8, 0);
     final temp = List<int>.filled(8, 0);
-    
+
     // Initialize hash state
     for (int i = 0; i < 8; i++) {
       h[i] = SHA256Constants.h[i];
@@ -158,7 +158,7 @@ class SHA256 {
     for (final block in blocks) {
       // Create message schedule in-place to avoid allocations
       _createMessageScheduleInPlace(block, w);
-      
+
       // Copy current hash state to temp
       for (int i = 0; i < 8; i++) {
         temp[i] = h[i];
@@ -166,16 +166,20 @@ class SHA256 {
 
       // Main compression loop - optimized
       for (int i = 0; i < 64; i++) {
-        final s1 = _rotateRight(temp[4], 6) ^
-                   _rotateRight(temp[4], 11) ^
-                   _rotateRight(temp[4], 25);
+        final s1 =
+            _rotateRight(temp[4], 6) ^
+            _rotateRight(temp[4], 11) ^
+            _rotateRight(temp[4], 25);
         final ch = (temp[4] & temp[5]) ^ (~temp[4] & temp[6]);
-        final temp1 = (temp[7] + s1 + ch + SHA256Constants.k[i] + w[i]) & 0xFFFFFFFF;
-        
-        final s0 = _rotateRight(temp[0], 2) ^
-                   _rotateRight(temp[0], 13) ^
-                   _rotateRight(temp[0], 22);
-        final maj = (temp[0] & temp[1]) ^ (temp[0] & temp[2]) ^ (temp[1] & temp[2]);
+        final temp1 =
+            (temp[7] + s1 + ch + SHA256Constants.k[i] + w[i]) & 0xFFFFFFFF;
+
+        final s0 =
+            _rotateRight(temp[0], 2) ^
+            _rotateRight(temp[0], 13) ^
+            _rotateRight(temp[0], 22);
+        final maj =
+            (temp[0] & temp[1]) ^ (temp[0] & temp[2]) ^ (temp[1] & temp[2]);
         final temp2 = (s0 + maj) & 0xFFFFFFFF;
 
         // Update state efficiently with minimal operations
@@ -202,20 +206,21 @@ class SHA256 {
   static void _createMessageScheduleInPlace(Uint8List block, List<int> w) {
     // First 16 words from block - optimized
     for (int i = 0; i < 16; i++) {
-      w[i] = (block[i * 4] << 24) |
-              (block[i * 4 + 1] << 16) |
-              (block[i * 4 + 2] << 8) |
-              block[i * 4 + 3];
+      w[i] =
+          (block[i * 4] << 24) |
+          (block[i * 4 + 1] << 16) |
+          (block[i * 4 + 2] << 8) |
+          block[i * 4 + 3];
     }
 
     // Remaining 48 words - optimized with reduced operations
     for (int i = 16; i < 64; i++) {
       final w15 = w[i - 15];
       final w2 = w[i - 2];
-      
+
       final s0 = _rotateRight(w15, 7) ^ _rotateRight(w15, 18) ^ (w15 >>> 3);
       final s1 = _rotateRight(w2, 17) ^ _rotateRight(w2, 19) ^ (w2 >>> 10);
-      
+
       w[i] = (w[i - 16] + s0 + w[i - 7] + s1) & 0xFFFFFFFF;
     }
   }
@@ -261,11 +266,11 @@ class SHA256 {
   static List<Uint8List> _createBlocks(Uint8List data) {
     final blockCount = data.length ~/ _blockSize;
     final blocks = List<Uint8List>.filled(blockCount, Uint8List(0));
-    
+
     for (int i = 0; i < blockCount; i++) {
       blocks[i] = data.sublist(i * _blockSize, (i + 1) * _blockSize);
     }
-    
+
     return blocks;
   }
 
