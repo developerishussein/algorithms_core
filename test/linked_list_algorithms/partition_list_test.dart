@@ -17,7 +17,8 @@ void main() {
     test('All greater than or equal to x', () {
       final head = LinkedListNode.fromList([5, 6, 7]);
       final partitioned = partitionList(head, 5);
-      expect(LinkedListNode.toList(partitioned), equals([6, 7, 5]));
+      // stable partition: no elements <5, so original order is preserved
+      expect(LinkedListNode.toList(partitioned), equals([5, 6, 7]));
     });
     test('Single node', () {
       final head = LinkedListNode.fromList([42]);

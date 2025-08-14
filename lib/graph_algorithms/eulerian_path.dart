@@ -18,23 +18,32 @@
 /// print(path); // Eulerian path or circuit
 /// ```
 List<T>? findEulerianPath<T>(Map<T, List<T>> graph, {bool directed = false}) {
-  // Count degrees
-  final inDeg = <T, int>{};
-  final outDeg = <T, int>{};
+  // Build symmetric adjacency for undirected graphs and count degrees
+  final local = <T, List<T>>{};
   for (var u in graph.keys) {
-    outDeg[u] = graph[u]!.length;
-    for (var v in graph[u]!) {
-      inDeg[v] = (inDeg[v] ?? 0) + 1;
-      if (!directed) {
-        outDeg[v] = outDeg[v] ?? 0;
-        inDeg[u] = inDeg[u] ?? 0;
+    local[u] = List<T>.from(graph[u]!);
+  }
+  if (!directed) {
+    for (var u in graph.keys) {
+      for (var v in graph[u]!) {
+        local.putIfAbsent(v, () => <T>[]);
+        if (!local[v]!.contains(u)) local[v]!.add(u);
       }
     }
+  }
+  final inDeg = <T, int>{};
+  final outDeg = <T, int>{};
+  for (var u in local.keys) {
+    outDeg[u] = local[u]!.length;
+    for (var v in local[u]!) {
+      inDeg[v] = (inDeg[v] ?? 0) + 1;
+    }
+    inDeg[u] = inDeg[u] ?? 0;
   }
   // Find start node
   T? start;
   int plus1 = 0, minus1 = 0;
-  for (var v in graph.keys) {
+  for (var v in local.keys) {
     final outD = outDeg[v] ?? 0, inD = inDeg[v] ?? 0;
     if (outD - inD == 1) {
       plus1++;
@@ -49,18 +58,21 @@ List<T>? findEulerianPath<T>(Map<T, List<T>> graph, {bool directed = false}) {
       (!directed && !(plus1 == 0 && minus1 == 0))) {
     return null;
   }
-  start ??= graph.keys.first;
+  start ??= local.keys.first;
   if (start == null) return null;
   // Hierholzer's algorithm
   final stack = <T>[start];
   final path = <T>[];
-  final localGraph = <T, List<T>>{
-    for (var u in graph.keys) u: List<T>.from(graph[u]!),
-  };
+  final localGraph = local;
   while (stack.isNotEmpty) {
     final u = stack.last;
     if (localGraph[u]!.isNotEmpty) {
-      stack.add(localGraph[u]!.removeLast());
+      final v = localGraph[u]!.removeLast();
+      if (!directed) {
+        // remove reverse edge to mark undirected edge as consumed
+        localGraph[v]!.remove(u);
+      }
+      stack.add(v);
     } else {
       path.add(stack.removeLast());
     }

@@ -16,10 +16,11 @@ void main() {
       expect(graph[path.first]!.contains(path.last), isTrue);
     });
     test('No Hamiltonian path', () {
+      // disconnected graph (node 2 isolated) -> no Hamiltonian path covering all nodes
       final graph = <int, List<int>>{
         0: [1],
-        1: [0, 2],
-        2: [1],
+        1: [0],
+        2: [],
       };
       expect(findHamiltonianPath(graph), isNull);
     });

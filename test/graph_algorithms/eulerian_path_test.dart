@@ -13,13 +13,15 @@ void main() {
       expect(path, isNotNull);
       expect(path!.length, equals(4));
     });
-    test('No Eulerian path', () {
+    test('Eulerian trail in simple chain', () {
       final graph = <int, List<int>>{
         0: [1],
         1: [0, 2],
         2: [1],
       };
-      expect(findEulerianPath(graph), isNull);
+      final path = findEulerianPath(graph);
+      expect(path, isNotNull);
+      expect(path!.length, equals(3));
     });
   });
 }

@@ -11,7 +11,11 @@ void main() {
         3: [2],
       };
       final bridges = findBridges(graph);
-      expect(bridges, contains([2, 3]));
+      // match by value rather than list identity
+      expect(
+        bridges.any((b) => b.length == 2 && b[0] == 2 && b[1] == 3),
+        isTrue,
+      );
     });
   });
 }

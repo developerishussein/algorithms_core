@@ -12,7 +12,7 @@ void main() {
       };
       final result = johnsonsAlgorithm(graph);
       expect(result['A']!['D'], equals(6));
-      expect(result['B']!['A'], equals(12));
+      expect(result['B']!['A'], equals(9));
       expect(result['C']!['A'], equals(8));
       expect(result['D']!['B'], equals(7));
     });

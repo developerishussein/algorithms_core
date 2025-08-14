@@ -7,7 +7,7 @@ void main() {
     expect(
       result,
       containsAll([
-        {},
+        <int>{},
         {1},
         {2},
         {1, 2},

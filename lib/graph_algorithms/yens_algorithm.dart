@@ -41,7 +41,8 @@ List<List<T>> yensAlgorithm<T>(
       visited.add(u);
       for (var v in g[u]!.keys) {
         final weight = g[u]![v]!;
-        if (dist[u]! + weight < dist[v]!) {
+        // allow overwrite on equal distance to prefer later-discovered routes
+        if (dist[u]! + weight <= dist[v]!) {
           dist[v] = dist[u]! + weight;
           prev[v] = u;
         }

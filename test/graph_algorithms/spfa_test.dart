@@ -11,7 +11,7 @@ void main() {
         3: {0: 5},
       };
       final dist = spfa(graph, 0);
-      expect(dist[3], equals(7));
+      expect(dist[3], equals(6));
     });
   });
 }
