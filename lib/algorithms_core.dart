@@ -285,3 +285,4 @@ export 'cryptographic_algorithms/argon2.dart';
 export 'cryptographic_algorithms/ecdsa.dart';
 export 'cryptographic_algorithms/eddsa.dart';
 export 'cryptographic_algorithms/bls_signatures.dart';
+export 'cryptographic_algorithms/scrypt_mining.dart';
