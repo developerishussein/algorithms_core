@@ -214,6 +214,10 @@ export 'ml_algorithms/catboost_like.dart';
 export 'ml_algorithms/ann.dart';
 export 'ml_algorithms/cnn.dart';
 export 'ml_algorithms/rnn.dart';
+export 'ml_algorithms/lstm.dart';
+export 'ml_algorithms/gru.dart';
+export 'ml_algorithms/transformer.dart';
+export 'ml_algorithms/gan.dart';
 
 // Backtracking Algorithms
 export 'backtracking_algorithms/n_queens.dart';
