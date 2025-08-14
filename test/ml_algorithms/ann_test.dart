@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:test/test.dart';
 import 'package:algorithms_core/ml_algorithms/ann.dart';
 
@@ -66,6 +67,35 @@ void main() {
       for (var i = 0; i < pred1.length; i++) {
         expect((pred1[i][0] - pred2[i][0]).abs(), lessThan(1e-12));
       }
+    });
+
+    test('json and params helpers', () async {
+      final X = [
+        [0.0, 1.0],
+        [1.0, 0.0],
+      ];
+      final Y = [
+        [1.0],
+        [1.0],
+      ];
+      final model = ANN(layers: [2, 3, 1], epochs: 50, lr: 0.05, seed: 3);
+      model.fit(X, Y);
+      final params = model.getParams();
+      expect(params.containsKey('weights'), isTrue);
+      final json = model.toJson();
+      final model2 = ANN.fromJson(json);
+      final p2 = model2.getParams();
+      expect(p2['weights'].length, equals(params['weights'].length));
+
+      // save to temp file and load
+      final tmp = 'test_ml_ann_tmp.json';
+      await model.saveToFile(tmp);
+      final model3 = await ANN.loadFromFile(tmp);
+      final p3 = model3.getParams();
+      expect(p3['biases'].length, equals(params['biases'].length));
+      // cleanup
+      final f = File(tmp);
+      if (f.existsSync()) f.deleteSync();
     });
   });
 }

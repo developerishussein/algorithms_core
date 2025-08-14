@@ -16,6 +16,8 @@
 /// high-performance library.
 library;
 
+import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
 class ANN {
@@ -132,7 +134,20 @@ class ANN {
   /// - verbose: if true, prints epoch loss.
   /// - optimizer: 'sgd' (default), 'momentum', or 'adam'.
   void fit(List<List<double>> X, List<List<double>> Y,
-      {int? batchSize, bool verbose = false, String optimizer = 'sgd', double momentum = 0.9, double beta1 = 0.9, double beta2 = 0.999, double epsilon = 1e-8}) {
+      {int? batchSize,
+      bool verbose = false,
+      String optimizer = 'sgd',
+      double momentum = 0.9,
+      double beta1 = 0.9,
+      double beta2 = 0.999,
+      double epsilon = 1e-8,
+      // l2 regularization (weight decay)
+      double l2 = 0.0,
+      // learning rate schedule: 'constant', 'step', 'exp'
+      String lrSchedule = 'constant',
+      int stepSize = 10,
+      double stepDecay = 0.5,
+      double expDecay = 0.99}) {
     if (X.isEmpty) throw ArgumentError('Empty dataset');
     if (X.length != Y.length) {
       throw ArgumentError('X and Y must have same number of rows');
@@ -166,6 +181,13 @@ class ANN {
     }
 
     for (var epoch = 0; epoch < epochs; epoch++) {
+      // compute current learning rate based on schedule
+      double currentLr = lr;
+      if (lrSchedule == 'step') {
+        currentLr = lr * pow(stepDecay, (epoch / stepSize).floor());
+      } else if (lrSchedule == 'exp') {
+        currentLr = lr * pow(expDecay, epoch);
+      }
       // forward for all examples (batch gradient descent)
       // We'll perform mini-batch training: create shuffled indices
       final indices = List<int>.generate(n, (i) => i);
@@ -269,24 +291,27 @@ class ANN {
           }
         }
 
-        // optimizer updates
+        // optimizer updates (use currentLr)
         if (optimizer == 'sgd') {
           for (var l = 0; l < weights.length; l++) {
             for (var iOut = 0; iOut < weights[l].length; iOut++) {
               for (var iIn = 0; iIn < weights[l][iOut].length; iIn++) {
-                weights[l][iOut][iIn] -= lr * gradW[l][iOut][iIn];
+                weights[l][iOut][iIn] -= currentLr * gradW[l][iOut][iIn];
+                // weight decay
+                if (l2 > 0) weights[l][iOut][iIn] *= (1 - currentLr * l2);
               }
-              biases[l][iOut] -= lr * gradB[l][iOut];
+              biases[l][iOut] -= currentLr * gradB[l][iOut];
             }
           }
         } else if (optimizer == 'momentum') {
           for (var l = 0; l < weights.length; l++) {
             for (var iOut = 0; iOut < weights[l].length; iOut++) {
               for (var iIn = 0; iIn < weights[l][iOut].length; iIn++) {
-                vW[l][iOut][iIn] = momentum * vW[l][iOut][iIn] + lr * gradW[l][iOut][iIn];
+                vW[l][iOut][iIn] = momentum * vW[l][iOut][iIn] + currentLr * gradW[l][iOut][iIn];
                 weights[l][iOut][iIn] -= vW[l][iOut][iIn];
+                if (l2 > 0) weights[l][iOut][iIn] *= (1 - currentLr * l2);
               }
-              vB[l][iOut] = momentum * vB[l][iOut] + lr * gradB[l][iOut];
+              vB[l][iOut] = momentum * vB[l][iOut] + currentLr * gradB[l][iOut];
               biases[l][iOut] -= vB[l][iOut];
             }
           }
@@ -300,14 +325,15 @@ class ANN {
                 vAdamW[l][iOut][iIn] = beta2 * vAdamW[l][iOut][iIn] + (1 - beta2) * g * g;
                 final mHat = mW[l][iOut][iIn] / (1 - pow(beta1, t));
                 final vHat = vAdamW[l][iOut][iIn] / (1 - pow(beta2, t));
-                weights[l][iOut][iIn] -= lr * mHat / (sqrt(vHat) + epsilon);
+                weights[l][iOut][iIn] -= currentLr * mHat / (sqrt(vHat) + epsilon);
+                if (l2 > 0) weights[l][iOut][iIn] *= (1 - currentLr * l2);
               }
               final gb = gradB[l][iOut];
               mB[l][iOut] = beta1 * mB[l][iOut] + (1 - beta1) * gb;
               vAdamB[l][iOut] = beta2 * vAdamB[l][iOut] + (1 - beta2) * gb * gb;
               final mHatB = mB[l][iOut] / (1 - pow(beta1, t));
               final vHatB = vAdamB[l][iOut] / (1 - pow(beta2, t));
-              biases[l][iOut] -= lr * mHatB / (sqrt(vHatB) + epsilon);
+              biases[l][iOut] -= currentLr * mHatB / (sqrt(vHatB) + epsilon);
             }
           }
         } else {
@@ -320,5 +346,58 @@ class ANN {
       lossHistory.add(lastLoss!);
       if (verbose) print('epoch=$epoch loss=$lastLoss');
     }
+  }
+
+  /// Asynchronous wrapper that runs `fit` in a Future (not in a separate isolate).
+  Future<void> fitAsync(List<List<double>> X, List<List<double>> Y,
+      {int? batchSize,
+      bool verbose = false,
+      String optimizer = 'sgd',
+      double momentum = 0.9,
+      double beta1 = 0.9,
+      double beta2 = 0.999,
+      double epsilon = 1e-8,
+      double l2 = 0.0,
+      String lrSchedule = 'constant',
+      int stepSize = 10,
+      double stepDecay = 0.5,
+      double expDecay = 0.99}) {
+    return Future(() => fit(X, Y,
+        batchSize: batchSize,
+        verbose: verbose,
+        optimizer: optimizer,
+        momentum: momentum,
+        beta1: beta1,
+        beta2: beta2,
+        epsilon: epsilon,
+        l2: l2,
+        lrSchedule: lrSchedule,
+        stepSize: stepSize,
+        stepDecay: stepDecay,
+        expDecay: expDecay));
+  }
+
+  /// Return a simple params map (weights and biases) without other metadata.
+  Map<String, dynamic> getParams() {
+    return {'weights': weights, 'biases': biases};
+  }
+
+  /// JSON helpers
+  String toJson() => jsonEncode(toMap());
+
+  static ANN fromJson(String s, {int? seed, int? epochs, double? lr}) {
+    final m = jsonDecode(s) as Map<String, dynamic>;
+    return fromMap(m, seed: seed, epochs: epochs, lr: lr);
+  }
+
+  Future<void> saveToFile(String path) async {
+    final f = File(path);
+    await f.writeAsString(toJson());
+  }
+
+  static Future<ANN> loadFromFile(String path, {int? seed, int? epochs, double? lr}) async {
+    final f = File(path);
+    final s = await f.readAsString();
+    return fromJson(s, seed: seed, epochs: epochs, lr: lr);
   }
 }
