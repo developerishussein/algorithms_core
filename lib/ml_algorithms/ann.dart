@@ -101,6 +101,30 @@ class ANN {
     return s / pred.length;
   }
 
+  /// Serialize model parameters to a Map (JSON-ready).
+  Map<String, dynamic> toMap() {
+    return {
+      'layers': layers,
+      'weights': weights,
+      'biases': biases,
+    };
+  }
+
+  /// Reconstruct an ANN from a previously-serialized Map.
+  static ANN fromMap(Map<String, dynamic> m, {int? seed, int? epochs, double? lr}) {
+    final layers = List<int>.from(m['layers'] as List);
+    final model = ANN(layers: layers, epochs: epochs ?? 100, lr: lr ?? 0.01, seed: seed);
+    // materialize weights and biases
+    final rawW = m['weights'] as List;
+    model.weights = rawW
+        .map((layer) => (layer as List).map((row) => List<double>.from(row as List)).toList())
+        .toList();
+    final rawB = m['biases'] as List;
+    model.biases = rawB.map((b) => List<double>.from(b as List)).toList();
+    model._inited = true;
+    return model;
+  }
+
   /// Train the network.
   ///
   /// Optional arguments:
