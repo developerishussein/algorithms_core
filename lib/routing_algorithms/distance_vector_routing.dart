@@ -237,7 +237,6 @@ class DistanceVectorRoutingAlgorithm<T> {
   static const Duration _defaultUpdateInterval = Duration(seconds: 30);
   static const Duration _routeTimeout = Duration(seconds: 180);
   static const int _maxIterations = 100;
-  static const int _maxHopCount = 16;
 
   final Duration updateInterval;
   final Duration routeTimeout;
@@ -415,10 +414,12 @@ class DistanceVectorRoutingAlgorithm<T> {
     }
 
     // Apply split horizon and poison reverse if enabled
-    // Temporarily disabled to fix route discovery issues
-    // if (enableSplitHorizon || enablePoisonReverse) {
-    //   _applyLoopPreventionTechniques(routes, neighborAds);
-    // }
+    if (enableSplitHorizon) {
+      _applySplitHorizon(routes, neighborAds);
+    }
+    if (enablePoisonReverse) {
+      _applyPoisonReverse(routes, neighborAds);
+    }
 
     return DistanceVectorRoutingTable<T>(
       sourceNode: sourceNode,
@@ -431,32 +432,6 @@ class DistanceVectorRoutingAlgorithm<T> {
   }
 
   /// Estimates hop count based on cost (simplified heuristic)
-  int _getHopCount(num cost) {
-    // For unit costs (like in test networks), use cost as hop count
-    if (cost <= 1) return 1;
-    if (cost <= 2) return 2;
-    if (cost <= 3) return 3;
-    if (cost <= 5) return 4;
-    if (cost <= 10) return 5;
-    if (cost <= 20) return 6;
-    if (cost <= 50) return 7;
-    return 8;
-  }
-
-  /// Applies loop prevention techniques (split horizon and poison reverse)
-  void _applyLoopPreventionTechniques(
-    Map<T, DistanceVectorRouteEntry<T>> routes,
-    Map<T, NeighborAdvertisement<T>> neighborAds,
-  ) {
-    if (enableSplitHorizon) {
-      _applySplitHorizon(routes, neighborAds);
-    }
-
-    if (enablePoisonReverse) {
-      _applyPoisonReverse(routes, neighborAds);
-    }
-  }
-
   /// Applies split horizon technique to prevent routing loops
   void _applySplitHorizon(
     Map<T, DistanceVectorRouteEntry<T>> routes,
