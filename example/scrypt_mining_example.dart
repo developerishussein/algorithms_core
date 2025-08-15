@@ -255,6 +255,7 @@ void main() {
         salt: testSalt,
         password: testBlockHeader,
       );
+      ScryptMining.hash(invalidParams);
       print('Unexpected success with invalid N=3');
     } catch (e) {
       print('Correctly caught error: $e');
@@ -271,6 +272,7 @@ void main() {
         salt: testSalt,
         password: testBlockHeader,
       );
+      ScryptMining.hash(invalidParams);
       print('Unexpected success with invalid r=0');
     } catch (e) {
       print('Correctly caught error: $e');
@@ -287,6 +289,7 @@ void main() {
         salt: testSalt,
         password: testBlockHeader,
       );
+      ScryptMining.hash(invalidParams);
       print('Unexpected success with invalid p=-1');
     } catch (e) {
       print('Correctly caught error: $e');

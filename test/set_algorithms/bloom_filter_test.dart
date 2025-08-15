@@ -410,9 +410,26 @@ void main() {
           equals(reconstructed2.config.optimalSize),
         );
       });
+
+      test('Serialization with custom parameters', () {
+        final filter = BloomFilter<String>.optimal(
+          expectedElements: 1000,
+          falsePositiveRate: 0.01,
+        );
+
+        filter.add('test1');
+        filter.add('test2');
+
+        final serialized = filter.toJson();
+        final deserialized = BloomFilter<String>.fromJson(serialized);
+
+        expect(deserialized.contains('test1'), isTrue);
+        expect(deserialized.contains('test2'), isTrue);
+        expect(deserialized.contains('test3'), isFalse);
+      });
     });
 
-    group('Performance Tests', () {
+    group('Memory Usage Tests', () {
       test('Large filter creation performance', () {
         final startTime = DateTime.now();
 
@@ -478,10 +495,6 @@ void main() {
           expectedElements: 100000,
           falsePositiveRate: 0.01,
         );
-
-        // Calculate expected memory usage
-        final expectedBits = filter.config.optimalSize;
-        final expectedBytes = (expectedBits + 7) ~/ 8;
 
         // Add elements to see actual memory usage
         for (int i = 0; i < 50000; i++) {

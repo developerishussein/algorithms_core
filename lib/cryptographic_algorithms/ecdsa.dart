@@ -434,22 +434,31 @@ class ECDSA {
     ECDSASignature signature,
     ECPoint publicKey,
   ) {
+    // Verify: 1 ≤ r,s ≤ n-1
     if (signature.r < BigInt.one || signature.r >= ECDSACurve.n) return false;
     if (signature.s < BigInt.one || signature.s >= ECDSACurve.n) return false;
 
+    // e = H(m) mod n (already done in _hashMessage)
+    final e = messageHash % ECDSACurve.n;
+
+    // w = s^(-1) mod n
     final w = _fastModInverse(signature.s, ECDSACurve.n);
     if (w == BigInt.zero) return false;
 
-    final u1 = (messageHash * w) % ECDSACurve.n;
+    // u1 = (e * w) mod n
+    final u1 = (e * w) % ECDSACurve.n;
+
+    // u2 = (r * w) mod n
     final u2 = (signature.r * w) % ECDSACurve.n;
 
-    // Optimized point operations with proper verification
+    // P = u1*G + u2*Q
     final point1 = _fastScalarMultiply(ECDSACurve.G, u1);
     final point2 = _fastScalarMultiply(publicKey, u2);
     final point = _fastPointAdd(point1, point2);
 
     if (point.isInfinity) return false;
 
+    // valid ⇔ (P.x mod n) == r
     final v = point.x % ECDSACurve.n;
     return v == signature.r;
   }
@@ -531,7 +540,7 @@ class ECDSA {
     return x;
   }
 
-  /// Optimized BigInt to bytes conversion
+  /// Optimized bytes to BigInt conversion (big-endian)
   static BigInt _bytesToBigInt(Uint8List bytes) {
     if (bytes.isEmpty) return BigInt.zero;
 
@@ -547,7 +556,7 @@ class ECDSA {
     final bytes = Uint8List.fromList(message.codeUnits);
     final hashBytes = SHA256.hashRaw(bytes);
 
-    // Convert 32-byte hash to BigInt
+    // Convert 32-byte hash to BigInt (big-endian)
     BigInt hash = BigInt.zero;
     for (int i = 0; i < hashBytes.length; i++) {
       hash = (hash << 8) | BigInt.from(hashBytes[i]);

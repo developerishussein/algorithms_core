@@ -111,30 +111,43 @@ void main() {
 
     test('Different salts produce different hashes', () {
       final blockHeader = Uint8List.fromList('TestBlock'.codeUnits);
-      
+
       // Use significantly different salts
       final salt1 = Uint8List.fromList([1, 2, 3, 4, 5, 6, 7, 8]);
-      final salt2 = Uint8List.fromList([255, 254, 253, 252, 251, 250, 249, 248]);
-      
+      final salt2 = Uint8List.fromList([
+        255,
+        254,
+        253,
+        252,
+        251,
+        250,
+        249,
+        248,
+      ]);
+
       final params1 = ScryptMiningParams.litecoinMainnet(
         blockHeader: blockHeader,
         salt: salt1,
       );
-      
+
       final params2 = ScryptMiningParams.litecoinMainnet(
         blockHeader: blockHeader,
         salt: salt2,
       );
-      
+
       final hash1 = ScryptMining.hash(params1);
       final hash2 = ScryptMining.hash(params2);
-      
+
       // Debug output
-      print('Salt 1: ${salt1.map((b) => b.toRadixString(16).padLeft(2, '0')).join()}');
-      print('Salt 2: ${salt2.map((b) => b.toRadixString(16).padLeft(2, '0')).join()}');
+      print(
+        'Salt 1: ${salt1.map((b) => b.toRadixString(16).padLeft(2, '0')).join()}',
+      );
+      print(
+        'Salt 2: ${salt2.map((b) => b.toRadixString(16).padLeft(2, '0')).join()}',
+      );
       print('Hash 1: $hash1');
       print('Hash 2: $hash2');
-      
+
       expect(hash1, isNot(equals(hash2)));
     });
 

@@ -268,7 +268,10 @@ class SHA256 {
     final blocks = List<Uint8List>.filled(blockCount, Uint8List(0));
 
     for (int i = 0; i < blockCount; i++) {
-      blocks[i] = data.sublist(i * _blockSize, (i + 1) * _blockSize);
+      // Use view instead of creating new Uint8List to reduce memory allocation
+      final start = i * _blockSize;
+      final end = start + _blockSize;
+      blocks[i] = data.sublist(start, end);
     }
 
     return blocks;

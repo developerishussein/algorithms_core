@@ -24,7 +24,9 @@ void main() {
       );
 
       final out = pso.optimize(iterations: 200);
-      final best = out['best'] as List<double>; // Fixed: use 'best' instead of 'bestPosition'
+      final best =
+          out['best']
+              as List<double>; // Fixed: use 'best' instead of 'bestPosition'
       expect((best[0] - 3.0).abs() + (best[1] - 3.0).abs(), lessThan(2.0));
     });
   });

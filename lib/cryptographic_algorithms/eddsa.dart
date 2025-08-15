@@ -184,7 +184,6 @@ class EdDSA {
   /// Internal signing method
   static EdDSASignature _signHash(Uint8List messageHash, Uint8List privateKey) {
     // Production-ready Ed25519 implementation
-    final random = Random.secure();
 
     // Generate deterministic nonce using RFC 8032 method
     final k = _generateDeterministicNonce(messageHash, privateKey);

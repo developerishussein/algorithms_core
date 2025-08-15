@@ -116,11 +116,6 @@ class ScryptMiningParams {
 
 /// Scrypt mining algorithm implementation for cryptocurrency mining
 class ScryptMining {
-  // Pre-allocated buffers for performance optimization
-  static final List<Uint8List> _tempBuffers = [];
-  static final List<List<int>> _stateBuffers = [];
-  static final int _bufferIndex = 0;
-
   /// Computes Scrypt hash for mining operations
   ///
   /// [params] - Mining parameters including N, r, p, dkLen, salt, and password
@@ -507,7 +502,6 @@ class ScryptMining {
   /// HMAC-SHA256 implementation - Production optimized
   static Uint8List _hmacSha256(Uint8List key, Uint8List message) {
     const blockSize = 64;
-    const outputSize = 32;
 
     // Prepare key with optimized padding
     Uint8List keyPadded;
@@ -605,7 +599,7 @@ class ScryptMining {
     ]);
   }
 
-  /// Convert bytes to hexadecimal string - Production optimized
+  /// Converts bytes to hexadecimal string
   static String _bytesToHex(Uint8List bytes) {
     return bytes.map((byte) => byte.toRadixString(16).padLeft(2, '0')).join();
   }

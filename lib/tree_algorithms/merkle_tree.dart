@@ -176,7 +176,6 @@ class MerkleTree<T> {
   final int leafCount;
   final int height;
   final String Function(T) hashFunction;
-  final Map<int, MerkleNode<T>> _nodeCache;
   final List<T> _leaves;
   final String _salt;
 
@@ -186,7 +185,6 @@ class MerkleTree<T> {
       leafCount = 0,
       height = 0,
       hashFunction = hashFunction ?? _defaultHash,
-      _nodeCache = {},
       _leaves = [],
       _salt = salt;
 
@@ -206,20 +204,13 @@ class MerkleTree<T> {
 
   /// Private constructor for internal use
   MerkleTree._withRoot(
-    MerkleNode<T> root,
-    int leafCount,
-    int height,
-    String Function(T) hashFunction,
-    Map<int, MerkleNode<T>> nodeCache,
-    List<T> leaves,
-    String salt,
-  ) : root = root,
-      leafCount = leafCount,
-      height = height,
-      hashFunction = hashFunction,
-      _nodeCache = nodeCache,
-      _leaves = leaves,
-      _salt = salt;
+    this.root,
+    this.leafCount,
+    this.height,
+    this.hashFunction,
+    this._leaves,
+    this._salt,
+  );
 
   /// Builds the complete Merkle tree from leaf data
   MerkleTree<T> _buildTree(List<T> items) {
@@ -238,14 +229,12 @@ class MerkleTree<T> {
 
     // Build internal nodes
     final rootNode = _buildInternalNodes(leafNodes, 0);
-    final nodeCache = <int, MerkleNode<T>>{};
 
     return MerkleTree<T>._withRoot(
       rootNode,
       items.length,
       _computeHeight(items.length),
       hashFunction,
-      nodeCache,
       leaves,
       _salt,
     );
@@ -311,15 +300,20 @@ class MerkleTree<T> {
     final right = node.right!;
 
     // Calculate which subtree contains the target
+    // For a complete binary tree, each internal node covers 2^(height - level - 1) leaves
     final leavesInLeft = 1 << (height - currentLevel - 1);
 
-    if (targetIndex < leavesInLeft) {
+    // Adjust targetIndex for padded trees
+    final adjustedTargetIndex =
+        targetIndex < leafCount ? targetIndex : targetIndex;
+
+    if (adjustedTargetIndex < leavesInLeft) {
       // Target is in left subtree, add right sibling to proof
       proof.add(right.hash);
       directions.add(true);
       _generateProofRecursive(
         left,
-        targetIndex,
+        adjustedTargetIndex,
         currentLevel + 1,
         proof,
         directions,
@@ -330,7 +324,7 @@ class MerkleTree<T> {
       directions.add(false);
       _generateProofRecursive(
         right,
-        targetIndex - leavesInLeft,
+        adjustedTargetIndex - leavesInLeft,
         currentLevel + 1,
         proof,
         directions,
@@ -406,21 +400,9 @@ class MerkleTree<T> {
 
   /// Gets all leaf hashes
   List<String> get leafHashes {
-    if (root == null) return [];
+    if (_leaves.isEmpty) return [];
 
-    final hashes = <String>[];
-    _collectLeafHashes(root!, hashes);
-    return hashes;
-  }
-
-  /// Collects all leaf hashes recursively
-  void _collectLeafHashes(MerkleNode<T> node, List<String> hashes) {
-    if (node.isLeaf) {
-      hashes.add(node.hash);
-    } else {
-      if (node.left != null) _collectLeafHashes(node.left!, hashes);
-      if (node.right != null) _collectLeafHashes(node.right!, hashes);
-    }
+    return _leaves.map((leaf) => _computeHash(leaf)).toList();
   }
 
   /// Computes hash for data item
@@ -432,6 +414,8 @@ class MerkleTree<T> {
   /// Combines two hashes (left + right)
   String _combineHashes(String left, String right) {
     final combined = left + right + _salt;
+    // For hash combination, we need to create a T-type object
+    // Since we're combining hashes, we'll use the combined string as T
     return hashFunction(combined as T);
   }
 

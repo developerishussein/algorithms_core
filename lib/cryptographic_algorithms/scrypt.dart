@@ -23,6 +23,7 @@
 library;
 
 import 'dart:typed_data';
+import 'sha256.dart';
 
 /// Scrypt key derivation function implementation
 class Scrypt {
@@ -75,8 +76,10 @@ class Scrypt {
     // Step 2: Generate B' = ROMix(B, N)
     final bPrime = await _romix(B, N, r);
 
-    // Step 3: Generate DK = PBKDF2(password, B', 1, dkLen)
-    final dK = await _pbkdf2(pwd, bPrime, 1, dkLen);
+    // Step 3: Generate DK = PBKDF2(password, salt + B', 1, dkLen)
+    // CRITICAL FIX: Use original salt combined with bPrime for final derivation
+    final finalSalt = Uint8List.fromList([...saltBytes, ...bPrime]);
+    final dK = await _pbkdf2(pwd, finalSalt, 1, dkLen);
 
     return dK;
   }
@@ -307,11 +310,19 @@ class Scrypt {
     return await _sha256(outerData);
   }
 
-  /// SHA-256 implementation (simplified for scrypt)
+  /// SHA-256 implementation (production-ready)
   static Future<Uint8List> _sha256(Uint8List data) async {
-    // This is a placeholder - in production, use the actual SHA256 implementation
-    // For now, return a dummy hash to avoid circular dependency
-    return Uint8List.fromList(List.generate(32, (i) => i));
+    // Use the actual SHA-256 implementation from our library
+    final hashString = SHA256.hashBytes(data);
+    final hashBytes = Uint8List(32);
+
+    // Convert hex string to bytes
+    for (int i = 0; i < 32; i++) {
+      final hexByte = hashString.substring(i * 2, i * 2 + 2);
+      hashBytes[i] = int.parse(hexByte, radix: 16);
+    }
+
+    return hashBytes;
   }
 
   /// Converts integer to 4-byte little-endian representation

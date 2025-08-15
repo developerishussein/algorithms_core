@@ -19,9 +19,9 @@ void main() {
       // Fixed: headLayers must include input size (4 features per channel) and output size (1)
       // 4 features per channel: mean, std, min, max
       final model = CNN(
-        height: 2, 
-        width: 2, 
-        channels: 1, 
+        height: 2,
+        width: 2,
+        channels: 1,
         headLayers: [4, 2, 1], // 4 input features, 2 hidden, 1 output
       );
       final out = model.predict(X);

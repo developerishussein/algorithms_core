@@ -481,15 +481,6 @@ class Argon2 {
     return padded;
   }
 
-  /// Creates Blake2b blocks
-  static List<Uint8List> _createBlake2bBlocks(Uint8List data) {
-    final blocks = <Uint8List>[];
-    for (int i = 0; i < data.length; i += 128) {
-      blocks.add(data.sublist(i, i + 128));
-    }
-    return blocks;
-  }
-
   /// Converts bytes to hexadecimal string
   static String _bytesToHex(Uint8List bytes) {
     return bytes.map((byte) => byte.toRadixString(16).padLeft(2, '0')).join();

@@ -296,11 +296,11 @@ class BLSSignatures {
   static BLSSignature _signHash(Uint8List messageHash, Uint8List privateKey) {
     // Production-ready BLS12-381 signing
     try {
-      // Compute H(m) - hash the message to a curve point
-      final Hm = _hashToCurve(messageHash);
+      // Hash message to curve point
+      final hm = _hashToCurve(messageHash);
 
       // Compute signature = privateKey * H(m)
-      final signature = _scalarMultiply(privateKey, Hm);
+      final signature = _scalarMultiply(privateKey, hm);
 
       // Ensure signature is exactly 96 bytes
       final signature96 = Uint8List(96);
@@ -329,8 +329,8 @@ class BLSSignatures {
   ) {
     // Production-ready BLS12-381 verification
     try {
-      // Compute H(m) - hash the message to a curve point
-      final Hm = _hashToCurve(messageHash);
+      // Hash message to curve point
+      final hm = _hashToCurve(messageHash);
 
       // Verify: e(signature, G2) = e(H(m), publicKey)
       // This is a simplified verification - in production use proper pairing
@@ -338,7 +338,7 @@ class BLSSignatures {
         signature.signature,
         BLS12381Curve.g2,
       );
-      final rightPairing = _computePairing(Hm, publicKey.publicKey);
+      final rightPairing = _computePairing(hm, publicKey.publicKey);
 
       return _pairingEqual(leftPairing, rightPairing);
     } catch (e) {

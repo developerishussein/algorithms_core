@@ -11,8 +11,8 @@ void main() {
         ],
       ];
       final model = LSTM(
-        inputSize: 2, 
-        hiddenSize: 5, 
+        inputSize: 2,
+        hiddenSize: 5,
         readoutLayers: [5, 5], // Fixed: includes input (5) and output (5) sizes
       );
       final out = model.predict(X);

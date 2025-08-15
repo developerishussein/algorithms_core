@@ -11,8 +11,8 @@ void main() {
         ],
       ];
       final model = GRU(
-        inputSize: 2, 
-        hiddenSize: 4, 
+        inputSize: 2,
+        hiddenSize: 4,
         readoutLayers: [4, 4], // Fixed: includes input (4) and output (4) sizes
       );
       final out = model.predict(X);
