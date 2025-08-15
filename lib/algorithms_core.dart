@@ -301,6 +301,11 @@ export 'routing_algorithms/ospf_algorithm.dart';
 export 'routing_algorithms/rip_algorithm.dart';
 export 'routing_algorithms/link_state_routing.dart';
 export 'routing_algorithms/distance_vector_routing.dart';
+// Wireless / P2P algorithms
+export 'wireless_p2p/aodv.dart';
+export 'wireless_p2p/dsr.dart';
+export 'wireless_p2p/chord.dart';
+export 'wireless_p2p/kademlia.dart';
 // Network optimization algorithms
 export 'network_optimization/max_flow_min_cut.dart';
 export 'network_optimization/min_cost_flow.dart';
