@@ -301,3 +301,8 @@ export 'routing_algorithms/ospf_algorithm.dart';
 export 'routing_algorithms/rip_algorithm.dart';
 export 'routing_algorithms/link_state_routing.dart';
 export 'routing_algorithms/distance_vector_routing.dart';
+// Network optimization algorithms
+export 'network_optimization/max_flow_min_cut.dart';
+export 'network_optimization/min_cost_flow.dart';
+export 'network_optimization/hungarian.dart';
+export 'network_optimization/edmonds_blossom.dart';
