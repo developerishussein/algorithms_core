@@ -6,45 +6,109 @@
 /// models and streaming support.
 library;
 
+// Streaming arithmetic coder (order-0) with renormalization and bit I/O.
+// This implementation follows the canonical integer arithmetic coding
+// approach (Witten, Neal, Cleary style) with a 32-bit coder state. It
+// supports arbitrary-length inputs by emitting bits during renormalize
+// steps and reloading bits during decode.
+
 class Arithmetic {
-  // Encode using simple static frequencies for bytes present in data.
+  // Number of bits in the coding register.
+
+  static const int _codeBits = 32;
+  static final int _maxvalue = (1 << _codeBits) - 1;
+  static final int _firstqtr = ((_maxvalue + 1) ~/ 4);
+  static final int _half = _firstqtr * 2;
+  static final int _thirdqtr = _firstqtr * 3;
+
   List<int> encode(List<int> data) {
     if (data.isEmpty) return [];
+
+    // build model
     final freq = <int, int>{};
     for (var b in data) {
       freq[b] = (freq[b] ?? 0) + 1;
     }
-    final syms = freq.keys.toList()..sort();
-    final cum = <int>[]; // cumulative
-    var total = 0;
-    for (var s in syms) {
-      cum.add(total);
-      total += freq[s]!;
+    final alphabet = freq.keys.toList()..sort();
+    final counts = alphabet.map((a) => freq[a]!).toList();
+    final total = counts.fold<int>(0, (p, e) => p + e);
+
+    // cumulative
+    final cum = <int>[0];
+    for (var c in counts) {
+      cum.add(cum.last + c);
     }
-    final m = 1 << 24; // precision
-    BigInt low = BigInt.zero;
-    BigInt high = BigInt.from(m) - BigInt.one;
-    for (var b in data) {
-      final idx = syms.indexOf(b);
-      final symLow = BigInt.from(cum[idx]);
-      final symHigh = BigInt.from(cum[idx] + freq[b]!);
-      final range = high - low + BigInt.one;
-      high = low + (range * symHigh ~/ BigInt.from(total)) - BigInt.one;
-      low = low + (range * symLow ~/ BigInt.from(total));
+
+    var low = 0;
+    var high = _maxvalue;
+    var bitsToFollow = 0;
+
+    final out = <int>[];
+    int bitBuffer = 0;
+    int bitCount = 0;
+
+    void outputBit(int bit) {
+      bitBuffer = (bitBuffer << 1) | (bit & 1);
+      bitCount++;
+      if (bitCount == 8) {
+        out.add(bitBuffer & 0xff);
+        bitBuffer = 0;
+        bitCount = 0;
+      }
     }
-    // output low as bytes
-    final bytes = <int>[];
-    final val = low;
-    var tmp = val;
-    while (tmp > BigInt.zero) {
-      bytes.add((tmp & BigInt.from(0xff)).toInt());
-      tmp = tmp >> 8;
+
+    void outputBitPlusFollow(int bit) {
+      outputBit(bit);
+      for (var i = 0; i < bitsToFollow; i++) {
+        outputBit(bit ^ 1);
+      }
+      bitsToFollow = 0;
     }
-    if (bytes.isEmpty) bytes.add(0);
-    return bytes.reversed.toList();
+
+    for (var symByte in data) {
+      final idx = alphabet.indexOf(symByte);
+      final symLow = cum[idx];
+      final symHigh = cum[idx + 1];
+      final range = high - low + 1;
+      high = low + (range * symHigh ~/ total) - 1;
+      low = low + (range * symLow ~/ total);
+
+      // renormalize
+      while (true) {
+        if (high < _half) {
+          outputBitPlusFollow(0);
+        } else if (low >= _half) {
+          outputBitPlusFollow(1);
+          low -= _half;
+          high -= _half;
+        } else if (low >= _firstqtr && high < _thirdqtr) {
+          bitsToFollow++;
+          low -= _firstqtr;
+          high -= _firstqtr;
+        } else {
+          break;
+        }
+        low = low << 1;
+        high = (high << 1) | 1;
+      }
+    }
+
+    // finish: emit one bit and follow
+    bitsToFollow++;
+    if (low < _firstqtr) {
+      outputBitPlusFollow(0);
+    } else {
+      outputBitPlusFollow(1);
+    }
+
+    // flush remaining bits (pad with zeros)
+    if (bitCount > 0) {
+      out.add((bitBuffer << (8 - bitCount)) & 0xff);
+    }
+
+    return out;
   }
 
-  // Decode with supplied symbol model (must be same as used in encode)
   List<int> decode(
     List<int> encoded,
     List<int> alphabet,
@@ -52,39 +116,80 @@ class Arithmetic {
     int outLen,
   ) {
     if (encoded.isEmpty) return [];
-    final m = 1 << 24;
-    BigInt value = BigInt.zero;
-    for (var b in encoded) {
-      value = (value << 8) + BigInt.from(b);
+
+    final counts = List<int>.from(freqs);
+    final total = counts.fold<int>(0, (p, e) => p + e);
+    final cum = <int>[0];
+    for (var c in counts) {
+      cum.add(cum.last + c);
     }
-    final total = freqs.reduce((a, b) => a + b);
-    BigInt low = BigInt.zero;
-    BigInt high = BigInt.from(m) - BigInt.one;
+
+    var low = 0;
+    var high = _maxvalue;
+
+    // bit reader
+    var bytePos = 0;
+    var currentByte = (bytePos < encoded.length) ? encoded[bytePos++] : 0;
+    var bitsRemaining = 8;
+
+    int getBit() {
+      if (bitsRemaining == 0) {
+        currentByte = (bytePos < encoded.length) ? encoded[bytePos++] : 0;
+        bitsRemaining = 8;
+      }
+      final bit = (currentByte >> (bitsRemaining - 1)) & 1;
+      bitsRemaining--;
+      return bit;
+    }
+
+    // initialize value with _CODE_BITS bits
+    var value = 0;
+    for (var i = 0; i < _codeBits; i++) {
+      value = (value << 1) | getBit();
+    }
+
     final res = <int>[];
     for (var i = 0; i < outLen; i++) {
-      final range = high - low + BigInt.one;
-      final scaled =
-          ((value - low + BigInt.one) * BigInt.from(total) - BigInt.one) ~/
-          range;
-      // find symbol
-      var acc = 0;
-      var sym = 0;
+      final range = high - low + 1;
+      final scaled = ((value - low + 1) * total - 1) ~/ range;
+
+      // find symbol index
+      var idx = 0;
       for (var j = 0; j < alphabet.length; j++) {
-        if (acc + freqs[j] > scaled.toInt()) {
-          sym = alphabet[j];
+        if (cum[j] <= scaled && scaled < cum[j + 1]) {
+          idx = j;
           break;
         }
-        acc += freqs[j];
       }
+      final sym = alphabet[idx];
       res.add(sym);
-      final symLow = acc;
-      final symHigh = acc + freqs[alphabet.indexOf(sym)];
-      high =
-          low +
-          (range * BigInt.from(symHigh) ~/ BigInt.from(total)) -
-          BigInt.one;
-      low = low + (range * BigInt.from(symLow) ~/ BigInt.from(total));
+
+      final symLow = cum[idx];
+      final symHigh = cum[idx + 1];
+      high = low + (range * symHigh ~/ total) - 1;
+      low = low + (range * symLow ~/ total);
+
+      // renormalize
+      while (true) {
+        if (high < _half) {
+          // do nothing
+        } else if (low >= _half) {
+          value -= _half;
+          low -= _half;
+          high -= _half;
+        } else if (low >= _firstqtr && high < _thirdqtr) {
+          value -= _firstqtr;
+          low -= _firstqtr;
+          high -= _firstqtr;
+        } else {
+          break;
+        }
+        low = low << 1;
+        high = (high << 1) | 1;
+        value = (value << 1) | getBit();
+      }
     }
+
     return res;
   }
 }
