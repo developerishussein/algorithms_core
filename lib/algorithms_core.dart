@@ -98,11 +98,20 @@ export 'graph_algorithms/mst_kruskal.dart';
 export 'graph_algorithms/mst_prim.dart';
 export 'graph_algorithms/kosaraju_scc.dart';
 export 'graph_algorithms/articulation_points.dart';
+
+// Network Algorithms
+// export 'network_algorithms/network_algorithms.dart';
+export 'network_algorithms/a_star.dart';
+export 'network_algorithms/ford_fulkerson.dart' hide min;
+export 'network_algorithms/edmonds_karp.dart' hide min;
+export 'network_algorithms/dinics_algorithm.dart' hide min;
+export 'network_algorithms/tarjans_algorithm.dart' hide min;
+export 'network_algorithms/union_find.dart' hide UnionFind;
+
 export 'graph_algorithms/union_find.dart';
 // Advanced Graph Algorithms
 export 'graph_algorithms/johnsons_algorithm.dart';
-export 'graph_algorithms/edmonds_karp.dart';
-export 'graph_algorithms/dinics_algorithm.dart';
+export 'graph_algorithms/dinics_algorithm.dart' hide dinicsAlgorithm;
 export 'graph_algorithms/eulerian_path.dart';
 export 'graph_algorithms/hamiltonian_path.dart';
 export 'graph_algorithms/chinese_postman.dart';
@@ -286,3 +295,9 @@ export 'cryptographic_algorithms/ecdsa.dart';
 export 'cryptographic_algorithms/eddsa.dart';
 export 'cryptographic_algorithms/bls_signatures.dart';
 export 'cryptographic_algorithms/scrypt_mining.dart';
+// Routing Algorithms
+export 'routing_algorithms/bgp_algorithm.dart';
+export 'routing_algorithms/ospf_algorithm.dart';
+export 'routing_algorithms/rip_algorithm.dart';
+export 'routing_algorithms/link_state_routing.dart';
+export 'routing_algorithms/distance_vector_routing.dart';
