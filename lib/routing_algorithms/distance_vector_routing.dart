@@ -514,10 +514,45 @@ class DistanceVectorRoutingAlgorithm<T> {
     if (!hasChanges) return null;
 
     // Recompute routes with updated neighbor information
-    return computeRoutes(
+    final recomputed = computeRoutes(
       network,
       currentTable.sourceNode,
       initialAdvertisements: updatedNeighborAds,
+    );
+
+    // Merge advertised destinations into the routing table so that
+    // newly learned advertisements (even from external/unknown neighbors)
+    // show up as routes. This mirrors real DVR implementations where
+    // advertised destinations are recorded even if not immediately
+    // reachable via the current topology snapshot.
+    final mergedRoutes = Map<T, DistanceVectorRouteEntry<T>>.from(
+      recomputed.routes,
+    );
+
+    for (final ad in updatedNeighborAds.values) {
+      for (final dest in ad.distanceVector.keys) {
+        if (!mergedRoutes.containsKey(dest)) {
+          mergedRoutes[dest] = DistanceVectorRouteEntry<T>(
+            destination: dest,
+            nextHop: ad.neighbor,
+            cost: ad.distanceVector[dest]!,
+            lastUpdate: DateTime.now(),
+            isDirectlyConnected: false,
+            advertisingNeighbor: ad.neighbor,
+            hopCount: 1,
+            attributes: {'timeout': routeTimeout},
+          );
+        }
+      }
+    }
+
+    return DistanceVectorRoutingTable<T>(
+      sourceNode: recomputed.sourceNode,
+      routes: Map.unmodifiable(mergedRoutes),
+      neighborAdvertisements: Map.unmodifiable(updatedNeighborAds),
+      lastUpdate: recomputed.lastUpdate,
+      totalRoutes: mergedRoutes.length,
+      totalNeighbors: updatedNeighborAds.length,
     );
   }
 
@@ -544,10 +579,37 @@ class DistanceVectorRoutingAlgorithm<T> {
       updatedAds[advertisement.neighbor] = advertisement;
 
       // Recompute routes with updated neighbor information
-      return computeRoutes(
+      final recomputed = computeRoutes(
         network,
         currentTable.sourceNode,
         initialAdvertisements: updatedAds,
+      );
+
+      final mergedRoutes = Map<T, DistanceVectorRouteEntry<T>>.from(
+        recomputed.routes,
+      );
+      for (final dest in advertisement.distanceVector.keys) {
+        if (!mergedRoutes.containsKey(dest)) {
+          mergedRoutes[dest] = DistanceVectorRouteEntry<T>(
+            destination: dest,
+            nextHop: advertisement.neighbor,
+            cost: advertisement.distanceVector[dest]!,
+            lastUpdate: DateTime.now(),
+            isDirectlyConnected: false,
+            advertisingNeighbor: advertisement.neighbor,
+            hopCount: 1,
+            attributes: {'timeout': routeTimeout},
+          );
+        }
+      }
+
+      return DistanceVectorRoutingTable<T>(
+        sourceNode: recomputed.sourceNode,
+        routes: Map.unmodifiable(mergedRoutes),
+        neighborAdvertisements: Map.unmodifiable(updatedAds),
+        lastUpdate: recomputed.lastUpdate,
+        totalRoutes: mergedRoutes.length,
+        totalNeighbors: updatedAds.length,
       );
     }
 

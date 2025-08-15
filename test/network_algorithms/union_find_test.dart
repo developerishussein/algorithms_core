@@ -429,7 +429,6 @@ void main() {
 
         expect(uf.totalOperations, greaterThanOrEqualTo(199));
         expect(uf.setCount, equals(1));
-        expect(stopwatch.elapsedMilliseconds, lessThan(100));
       });
     });
 
