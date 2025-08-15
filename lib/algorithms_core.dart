@@ -306,6 +306,12 @@ export 'wireless_p2p/aodv.dart';
 export 'wireless_p2p/dsr.dart';
 export 'wireless_p2p/chord.dart';
 export 'wireless_p2p/kademlia.dart';
+// Compression algorithms
+export 'compression/huffman.dart';
+export 'compression/lzw.dart';
+export 'compression/rle.dart';
+export 'compression/arithmetic.dart';
+export 'compression/bwt.dart';
 // Network optimization algorithms
 export 'network_optimization/max_flow_min_cut.dart';
 export 'network_optimization/min_cost_flow.dart';
