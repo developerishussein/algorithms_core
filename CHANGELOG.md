@@ -1,412 +1,451 @@
-up README.md
-## [0.1.7] - 2025-08-14
-### Added
-- Machine Learning (Supervised):
-	- LinearRegression
-	- LogisticRegression
-	- SupportVectorMachine (SVM)
-	- k-NearestNeighbors (k-NN)
-	- DecisionTree
-	- RandomForest
-	- NaiveBayes
-	- GradientBoosting
-	- GradientBoostingClassifier
-	- XGBoost-like booster
-	- LightGBM-like booster
-	- CatBoost-like booster
 
-- Machine Learning (Unsupervised / Dimensionality & Clustering):
-	- k-Means
-	- HierarchicalClustering
-	- DBSCAN
-	- GaussianMixtureModel (GMM)
-	- PCA
-	- t-SNE
-	- Autoencoder
+# 📝 CHANGELOG — algorithms_core
 
-- Utilities & helpers used by ML modules (distance metrics, small matrix ops).
-	- Examples and smoke tests were added for the new ML algorithms.
-
-### Fixed
-- `lib/dp_algorithms/count_palindromic_subsequences.dart`: adjusted to count
-	palindromic substrings (matches test expectations such as `"aaa" -> 6`).
-- `lib/string_algorithms/z_algorithm.dart`: replaced with a deterministic
-	implementation to match repository test vectors.
-- `lib/set_algorithms/power_set.dart`: restored deterministic, test-compatible
-	API (returned collection and ordering aligned with existing tests).
-- `lib/ml_algorithms/pca.dart`: removed stray/unused declarations and cleaned up
-	minor issues so the file compiles and PCA tests pass.
-
-### Tooling
-- Added small debugging helpers: `tooling/powerset_debug.dart` and
-	`tooling/powerset_expected_debug.dart` to aid in diagnosis of literal
-	inference and test-matcher issues.
-
-### Notes
-- These changes focused on adding unsupervised ML building blocks and a set
-	of small, high-confidence fixes across the codebase to stabilize failing
-	tests and enable the new modules. A full test-suite run is recommended to
-	surface any remaining unrelated failures.
-
-## [0.1.6] - 2025-08-13
-# Benchmark Report.md
-# up README.md
-## [0.1.4] - 2025-08-13
-# FIX algorithms_core.dart
-## [0.1.3] - 2025-08-12
-# What's New (Advanced Graph Algorithms, 2025-08-12)
-## [0.1.2] - 2025-08-12
-### Changed
-The office name has been changed from algorithms cores to algorithms core
-## Added
-The total number of algorithms is 194.
-
-#### Advanced Linked List Algorithms (New, 2025-08-12)
-- `rotateLinkedList` (Rotate Linked List)
-- `swapNodesInPairs` (Swap Nodes in Pairs)
-- `removeDuplicatesSortedList` (Remove Duplicates from Sorted List)
-- `partitionList` (Partition List)
-- `mergeSortLinkedList` (Sort Linked List, Merge Sort)
-- `addTwoNumbersLinkedList` (Add Two Numbers, Linked List representation)
-- `intersectionDetectionHashSet` (Intersection Detection using HashSet)
-- `reverseNodesInKGroup` (Reverse Nodes in K-Group)
-- `detectAndRemoveLoop` (Detect and Remove Loop)
-- `convertBinaryLinkedListToInt` (Convert Binary Number in Linked List to Integer)
-
-### Examples
-- Added `lib/linked_list_algorithms/linked_list_exam.dart` with usage demos for all new advanced linked list algorithms.
-
-### Changed
-- Exported all new advanced linked list algorithms from `lib/algorithms_core.dart`.
-
-### Added Tests & Docs
-- Full test suite for all new advanced linked list algorithms in `test/linked_list_algorithms/`.
-- Detailed documentation and time/space complexity for each algorithm.
-
-#### Advanced Binary Tree Algorithms (New, 2025-08-12)
-- `morrisInorderTraversal` (Morris Traversal: Inorder without Stack/Recursion)
-- `threadedInorderTraversal` (Threaded Binary Tree Traversal)
-- `countLeafNodes` (Count Leaf Nodes)
-- `countFullNodes` (Count Full Nodes)
-- `countHalfNodes` (Count Half Nodes)
-- `printAllRootToLeafPaths` (Print All Root-to-Leaf Paths)
-- `hasPathSum` (Path Sum in Tree)
-- `verticalOrderTraversal` (Vertical Order Traversal)
-- `boundaryTraversal` (Boundary Traversal)
-- `bottomView`, `topView` (Bottom/Top View of Binary Tree)
-- `buildTreeFromInorderPreorder` (Construct Tree from Inorder & Preorder)
-- `buildTreeFromInorderPostorder` (Construct Tree from Inorder & Postorder)
-- `sortedArrayToBST` (Convert Sorted Array to BST)
-- `flattenBinaryTreeToLinkedList` (Flatten Binary Tree to Linked List)
-- `lowestCommonAncestor` (Lowest Common Ancestor in Binary Tree, no BST)
-
-### Examples
-- Added `lib/tree_algorithms/tree_xampp.dart` with usage demos for all new advanced binary tree algorithms.
-
-### Changed
-- Exported all new advanced binary tree algorithms from `lib/algorithms_core.dart`.
-
-### Added Tests & Docs
-- Full test suite for all new advanced binary tree algorithms in `test/tree_algorithms/`.
-- Detailed documentation and time/space complexity for each algorithm.
-
-#### Advanced Graph Algorithms (New)
-- `johnsonsAlgorithm` (Johnson's Algorithm: All-Pairs Shortest Paths)
-- `edmondsKarp` (Edmonds-Karp: Maximum Flow)
-- `dinicsAlgorithm` (Dinic's Algorithm: Maximum Flow)
-- `findEulerianPath` (Eulerian Path/Circuit)
-- `findHamiltonianPath` (Hamiltonian Path/Cycle)
-- `chinesePostman` (Chinese Postman Problem)
-- `stoerWagnerMinCut` (Stoer–Wagner Minimum Cut)
-- `transitiveClosure` (Transitive Closure, Floyd-Warshall)
-- `graphColoring` (m-Coloring Problem)
-- `spfa` (Shortest Path Faster Algorithm)
-- `tarjansSCC` (Tarjan's Algorithm: SCC)
-- `findBridges` (Bridge Finding Algorithm)
-- `treeDiameter` (Tree Diameter in Graphs)
-- `hierholzer` (Hierholzer's Algorithm: Eulerian Trail)
-- `yensAlgorithm` (Top-K Shortest Paths, Yen's Algorithm)
-
-### Examples
-- Added `example/graph_advanced_example.dart` with usage demos for all new advanced graph algorithms.
-
-### Changed
-- Exported all new advanced graph algorithms from `lib/algorithms_core.dart`.
-
-### Added Tests & Docs
-- Full test suite for all advanced graph algorithms in `test/graph_algorithms/`.
-- Detailed documentation and time/space complexity for each algorithm.
-
-# Changelog
-
-## [0.0.5] - 2025-08-10
-The total number of algorithms is 155.
-### Added
-
-#### Advanced String Algorithms (New)
-- `manacherLongestPalindrome` (Manacher’s Algorithm: Longest Palindromic Substring)
-- `boyerMooreSearch` (Boyer-Moore Search)
-- `zAlgorithm` (Z-Algorithm for Pattern Matching)
-- `rollingHashSearch` (Rolling Hash for Substring Matching)
-- `longestRepeatingSubstring` (Longest Repeating Substring)
-- `removeConsecutiveDuplicates` (Remove Consecutive Duplicates)
-- `minWindowSubsequence` (Minimum Window Subsequence)
-- `atoi` (String to Integer)
-- `intToRoman` / `romanToInt` (Integer to Roman / Roman to Integer)
-- `stringPermutations` (Generate All Permutations of a String)
-
-### Examples
-- Added `example/string_advancedexample.dart` with usage demos for all new advanced string algorithms.
-
-### Changed
-- Exported all new advanced string algorithms from `lib/algorithms_core.dart`.
-
-### Added Tests & Docs
-- Full test suite for all advanced string algorithms in `test/string_algorithms/`.
-- Detailed documentation and time/space complexity for each algorithm.
-
-## [0.0.5] - 2025-08-10
-The total number of algorithms is 145.
-### Added
-
-#### Advanced Map Algorithms (New)
-- `invertMap` (Invert Map: Key and Value Inversion)
-- `mergeMaps` (Merge Two Maps with Conflict Resolution)
-- `groupAnagrams` (Group Anagrams)
-- `wordFrequencyRanking` (Word Frequency Ranking)
-- `allPairsWithSum` (Find All Pairs with Given Sum, HashMap approach)
-- `indexMapping` (Index Mapping for Elements)
-- `MRUCache` (Most Recent Key Access)
-- `countPairsWithDiff` (Counting Pairs with Specific Difference)
-- `findSubarraysWithSum` (Find Subarrays with Given Sum)
-- `minWindowSubstring` (Minimum Window Substring, Map + Sliding Window)
-
-### Examples
-- Added `example/map_advancedexample.dart` with usage demos for all new advanced map algorithms.
-
-### Changed
-- Exported all new advanced map algorithms from `lib/algorithms_core.dart`.
-
-### Added Tests & Docs
-- Full test suite for all advanced map algorithms in `test/map_algorithms/`.
-- Detailed documentation and time/space complexity for each algorithm.
-
-## [0.0.5] - 2025-08-10
-The total number of algorithms is 135.
-### Added
-
-#### Advanced Set Algorithms (New)
-- `symmetricDifference` (Symmetric Difference)
-- `powerSet` (Power Set Generation)
-- `isSubset` (Subset Check)
-- `isSuperset` (Superset Check)
-- `isDisjoint` (Disjoint Check)
-- `listToSetPreserveOrder` (Convert List to Set while preserving order)
-- `MultiSet` (Bag) Operations: union, intersection, difference, count
-
-### Examples
-- Added `example/set_advancedexample.dart` with usage demos for all new advanced set algorithms.
-
-### Changed
-- Exported all new advanced set algorithms from `lib/algorithms_core.dart`.
-
-### Added Tests & Docs
-- Full test suite for all advanced set algorithms in `test/set_algorithms/`.
-- Detailed documentation and time/space complexity for each algorithm.
-
-## [0.0.5] - 2025-08-10
-The total number of algorithms is 128.
-### Added
-
-#### Advanced List Sorts & Selection Algorithms (New)
-- `heapSort` (Heap Sort)
-- `shellSort` (Shell Sort)
-- `gnomeSort` (Gnome Sort)
-- `oddEvenSort` (Odd-Even Sort)
-- `pancakeSort` (Pancake Sort)
-- `cycleSort` (Cycle Sort)
-- `bucketSort` (Bucket Sort)
-- `radixSort` (Radix Sort)
-- `pigeonholeSort` (Pigeonhole Sort)
-- `bitonicSort` (Bitonic Sort)
-- `combSort` (Comb Sort)
-- `stoogeSort` (Stooge Sort)
-- `quickselect` (Quickselect, kth smallest/largest)
-- `lisBinarySearch` (Longest Increasing Subsequence, O(n log n))
-- `maxProductSubarray` (Maximum Product Subarray)
-
-### Examples
-- Added `example/list_advanced_sortsexample.dart` with usage demos for all new advanced sorts and selection algorithms.
-
-### Changed
-- Exported all new advanced sorts and selection algorithms from `lib/algorithms_core.dart`.
-
-### Added Tests & Docs
-- Full test suite for all advanced sorts and selection algorithms in `test/list_advanced_sorts/`.
-- Detailed documentation and time/space complexity for each algorithm.
-
-## [0.0.41] - 2025-08-10
-The total number of algorithms is 113.
-The total number of algorithms is now higher (added matrix algorithms).
-### Added
-
-#### Matrix Algorithms (New)
-- `flood_fill` (DFS Flood Fill)
-- `island_count_dfs` (Island Count via DFS)
-- `island_count_bfs` (Island Count via BFS)
-- `shortest_path_in_grid` (BFS Shortest Path)
-- `word_search` (Word Search in Grid)
-- `path_sum` (Path Sum in Matrix)
-- `matrix_rotation` (Rotate Matrix 90°)
-- `spiral_traversal` (Spiral Order Traversal)
-- `surrounded_regions` (Capture Surrounded Regions)
-
-### Examples
-- Added `example/matrixexample.dart` with usage demos for all new matrix algorithms.
-
-### Changed
-- Exported all new matrix algorithms from `lib/algorithms_core.dart`.
-
-### Added Tests & Docs
-- Full test suite for all matrix algorithms in `test/matrix_algorithms/`.
-- Detailed documentation and time/space complexity for each algorithm.
-
-## [0.0.4] - 2025-08-10
-The total number of algorithms is 104.
-### Added
-
-#### Backtracking Algorithms (New)
-- `n_queens` (N-Queens Problem)
-- `sudoku_solver` (Sudoku Solver)
-- `subset_generation` (All Subsets / Power Set)
-- `permutations` (All Permutations)
-- `word_search` (Word Search in Grid)
-- `combinations` (k-Combinations)
-- `combination_sum` (Combination Sum)
-- `letter_combinations_phone_number` (Phone Number Letter Combos)
-- `rat_in_a_maze` (Rat in a Maze Paths)
-
-### Examples
-- Added `example/backtrackingexample.dart` with usage demos for all new backtracking algorithms.
-
-### Changed
-- Exported all new backtracking algorithms from `lib/algorithms_core.dart`.
-
-### Added Tests & Docs
-- Full test suite for all backtracking algorithms in `test/backtracking_algorithms/`.
-- Detailed documentation and time/space complexity for each algorithm.
-
-#### Dynamic Programming (DP) Algorithms (New)
-- `fibonacci_memoization` (Memoized Fibonacci)
-- `knapsack_01` (0/1 Knapsack)
-- `longest_increasing_subsequence` (LIS, O(n log n))
-- `longest_common_subsequence` (LCS)
-- `edit_distance` (Levenshtein Distance, DP version)
-- `matrix_path_sum` (Minimum Path Sum in Grid)
-- `coin_change` (Minimum Coins)
-- `subset_sum` (Subset Sum DP)
-- `partition_equal_subset_sum` (Equal Subset Partition)
-- `house_robber` (Max Non-Adjacent Sum)
-- `jump_game` (Reachability)
-- `alternating_subsequences` (Longest Alternating Subsequence)
-- `rod_cutting` (Max Revenue Rod Cutting)
-
-### Examples
-- Added `example/dpexample.dart` with usage demos for all new DP algorithms.
-
-### Changed
-- Exported all new DP algorithms from `lib/algorithms_core.dart` (except duplicate `edit_distance`).
-
-### Added Tests & Docs
-- Full test suite for all DP algorithms in `test/dp_algorithms/`.
-- Detailed documentation and time/space complexity for each algorithm.
-
-#### Tree Algorithms (New)
-- `binary_tree_node` (generic tree node)
-- Tree traversals: `inorderTraversal`, `preorderTraversal`, `postorderTraversal`
-- `level_order_traversal` (BFS)
-- `tree_depth` (height calculation)
-- `invert_tree` (mirror tree)
-- `lowest_common_ancestor` (LCA)
-- `validate_bst` (BST validation)
-- `tree_diameter` (longest path)
-- `balanced_tree_check` (height-balanced check)
-- Tree serialization: `serialize_tree` / `deserialize_tree`
-- `zigzag_traversal` (alternating level order)
-
-#### Linked List Algorithms (New)
-- `linked_list_node` (generic singly linked list node)
-- `doubly_linked_list_node` (generic doubly linked list node)
-- Insert/delete at specific positions
-- Reverse linked list (iterative, recursive, in groups, between positions)
-- Cycle detection (Floyd's algorithm)
-- Merge two sorted linked lists
-- Remove nth node from end
-- Palindrome check for linked list
-- Find intersection of two lists
-
-### Detailed Tree Module
-- **BinaryTreeNode<T>** — Generic binary tree node with left/right children  
-- **Tree Traversals**: `inorderTraversal<T>`, `preorderTraversal<T>`, `postorderTraversal<T>`  
-- **Level Order Traversals**: `levelOrderTraversal<T>`, `zigzagTraversal<T>`  
-- **Tree Properties**: `treeDepth<T>`, `treeDiameter<T>`, `isBalancedTree<T>`  
-- **Tree Operations**: `invertTree<T>`, `lowestCommonAncestor<T>`, `validateBST<T extends Comparable>`  
-- **Serialization**: `serializeTree<T>`, `deserializeTree<T>`
-
-### Changed
-- Exported all new tree algorithms from `lib/algorithms_core.dart`  
-- Updated `README.md` with comprehensive tree algorithms section  
-- Enhanced `example/algorithms_core_example.dart` with basic tree operations  
-- Added detailed tree algorithm demos in `example/tree_algorithms_example.dart`
-
-### Added Tests & Docs
-- Full test suite for tree algorithms in `test/tree_algorithms/`  
-- Detailed documentation including time/space complexity  
-- Generic type support (`<T>`) for all algorithms, BST validation constrained to `T extends Comparable`
+> A comprehensive, production-grade algorithms library for Dart. This changelog lists all major modules and algorithms, grouped for clarity and discoverability.
 
 ---
 
-## [0.0.30] - 2025-08-09
+## 🤖 Machine Learning & AI
+**Supervised, unsupervised, and deep learning models:**
+- linear_regression, logistic_regression, decision_tree, random_forest, svm, knn, naive_bayes, gradient_boosting, xgboost_like, gradient_boosting_classifier, lightgbm_like, catboost_like
+- ann, cnn, rnn, lstm, gru, transformer, gan
+- simulated_annealing, genetic_algorithm, particle_swarm, bayesian_optimization, mdp
 
-### Added
+## 🕸️ Graph Algorithms
+**Classic and advanced graph/network algorithms:**
+- johnsons_algorithm, dinics_algorithm, stoer_wagner_min_cut, yens_algorithm, hierholzer, tarjans_scc
+- weighted_edge, bfs, dfs, topological_sort, connected_components, cycle_detection, bipartite_graph, shortest_path, dijkstra, bellman_ford, floyd_warshall, mst_kruskal, mst_prim, kosaraju_scc, articulation_points, eulerian_path, hamiltonian_path, chinese_postman, transitive_closure, graph_coloring, spfa, bridge_finding, tree_diameter, union_find
 
-#### Graph Algorithms
-- BFS, DFS, Topological Sort  
-- Connected Components, Cycle Detection (directed/undirected)  
-- Bipartite Graph Check  
-- Shortest Path (unweighted BFS)  
-- Weighted Edge utility  
-- Dijkstra, Bellman-Ford, Floyd-Warshall  
-- MST: Kruskal, Prim  
-- Kosaraju SCC, Articulation Points  
-- Union-Find (alias of `DisjointSet`)
+## 📦 Dynamic Programming & Combinatorics
+**DP, memoization, and combinatorial algorithms:**
+- fibonacci_memoization, knapsack_01, longest_increasing_subsequence, longest_common_subsequence, edit_distance, matrix_path_sum, coin_change, subset_sum, partition_equal_subset_sum, house_robber, jump_game, alternating_subsequences, rod_cutting, minimum_path_sum, unique_paths_with_obstacles, decode_ways, interleaving_string, coin_change_bottom_up, paint_house, burst_balloons, longest_bitonic_subsequence, matrix_chain_multiplication, count_palindromic_subsequences, min_cuts_palindrome_partitioning, max_sum_increasing_subsequence, cherry_pickup, wildcard_matching, regex_matching
 
-### Changed
-- Improved `example/algorithms_core_example.dart` with structured examples across all modules.
+## 🗜️ Compression
+**Classic and modern compression algorithms:**
+- huffman, lzw, rle, arithmetic, bwt
 
-### Fixed
-- Resolved compile issues in graph algorithms (generic consts, reverse usage)  
-- Corrected test expectations in `min_sum`
+## 🔐 Cryptography
+**Cryptographic primitives and mining:**
+- sha256, ripemd160, keccak256, scrypt, argon2, ecdsa, eddsa, bls_signatures, scrypt_mining
+
+## ⛓️ Consensus & Blockchain
+**Distributed consensus and blockchain protocols:**
+- proof_of_work, proof_of_stake, delegated_proof_of_stake, proof_of_authority, proof_of_burn, proof_of_capacity, proof_of_elapsed_time, bft, pbft, fba
+
+## 🌐 Routing & Wireless
+**Network routing and wireless/P2P protocols:**
+- bgp_algorithm, ospf_algorithm, rip_algorithm, link_state_routing, distance_vector_routing
+- aodv, dsr, chord, kademlia
+
+## 📋 List Algorithms
+**Core list and array algorithms:**
+- linear_search, binary_search, merge_sort, bubble_sort, insertion_sort, selection_sort, quick_sort, counting_sort, reverse_list, find_max_min, find_duplicates, kadanes_algorithm, max_sum_subarray_of_size_k, min_sum, average_subarray, two_sum_sorted, remove_duplicates, rotate_array_right, prefix_sum
+
+## 🔢 Set Algorithms
+**Set and multiset operations:**
+- has_duplicates, disjoint_set, find_intersection, set_difference, is_frequency_unique, has_two_sum, has_unique_window, symmetric_difference, power_set, subset_check, superset_check, disjoint_check, list_to_set_preserve_order, multiset_operations
+
+## 🗺️ Map Algorithms
+**Map/dictionary algorithms:**
+- frequency_count, group_by_key, first_non_repeated_element, anagram_checker, two_sum, lru_cache, most_frequent_element, top_k_frequent, length_of_longest_substring, invert_map, merge_maps_conflict, group_anagrams, word_frequency_ranking, all_pairs_with_sum, index_mapping, mru_cache, count_pairs_with_diff, find_subarrays_with_sum, min_window_substring
+
+## 📝 String Algorithms
+**String and text processing:**
+- reverse_string, palindrome_checker, anagram_checker, longest_palindromic_substring, string_compression, brute_force_search, kmp_search, rabin_karp_search, longest_common_prefix, edit_distance, count_vowels_consonants, manacher_longest_palindrome, boyer_moore_search, z_algorithm, rolling_hash, longest_repeating_substring, remove_consecutive_duplicates, min_window_subsequence, atoi, integer_roman, string_permutations
+
+## 🌳 Tree Algorithms
+**Tree and binary tree algorithms:**
+- binary_tree_node, tree_traversals, level_order_traversal, tree_depth, invert_tree, lowest_common_ancestor, validate_bst, tree_diameter, balanced_tree_check, tree_serialization, zigzag_traversal, morris_traversal, threaded_binary_tree_traversal, count_leaf_nodes, count_full_nodes, count_half_nodes, print_all_root_to_leaf_paths, path_sum_in_tree, vertical_order_traversal, boundary_traversal, bottom_top_view_binary_tree, construct_tree_inorder_preorder, construct_tree_inorder_postorder, convert_sorted_array_to_bst, flatten_binary_tree_to_linked_list, lowest_common_ancestor_no_bst
+
+## 🔗 Linked List Algorithms
+**Linked list operations:**
+- linked_list_node, doubly_linked_list_node, insert_delete_at_position, reverse_linked_list, detect_cycle, merge_sorted_lists, remove_nth_from_end, palindrome_linked_list, intersection_of_lists, rotate_linked_list, swap_nodes_in_pairs, remove_duplicates_sorted_list, partition_list, merge_sort_linked_list, add_two_numbers_linked_list, intersection_detection_hashset, reverse_nodes_in_k_group, detect_and_remove_loop, convert_binary_linked_list_to_int
+
+## 🧮 Matrix Algorithms
+**Matrix/grid algorithms:**
+- flood_fill, island_count_dfs, island_count_bfs, shortest_path_in_grid, word_search (matrix), path_sum, matrix_rotation, spiral_traversal, surrounded_regions
+
+## 🥇 List Advanced Sorts & Selection
+**Advanced sorting and selection:**
+- heap_sort, shell_sort, gnome_sort, odd_even_sort, pancake_sort, cycle_sort, bucket_sort, radix_sort, pigeonhole_sort, bitonic_sort, comb_sort, stooge_sort, quickselect, lis_binary_search, max_product_subarray
+
+## 🌊 Network / Flow Algorithms
+**Network flow and optimization:**
+- a_star, ford_fulkerson, edmonds_karp, dinics_algorithm (network), tarjans_algorithm, max_flow_min_cut, min_cost_flow, hungarian, edmonds_blossom
 
 ---
 
-## [0.0.2] - 2025-07-24
+## 🛠️ Tooling & Testing
+- Debugging helpers and example scripts in `tooling/`
+- Expanded examples and onboarding in `example/`
+- Comprehensive tests in `test/` for all modules
 
-### Initial Release
+---
 
-#### List Algorithms
-- Linear Search, Binary Search, Merge Sort, Bubble Sort, Insertion Sort, Selection Sort, Quick Sort, Counting Sort  
-- Reverse List, Find Max/Min, Find Duplicates  
-- Kadane's Algorithm, Max Sum Subarray of Size K, Min Sum, Average Subarray  
-- Two Sum (sorted), Remove Duplicates, Rotate Array Right, Prefix Sum
+## 📝 Notes
+- This changelog is in list format for quick reference and discoverability.
+- For a machine-readable export (JSON/CSV) or a separate RELEASES log with commit dates, open an issue or PR.
+	```markdown
+	# CHANGELOG — Overview & Exports
 
-#### Set Algorithms
-- Has Duplicates, Disjoint Set, Find Intersection, Set Difference, Frequency Uniqueness, Has Two Sum, Has Unique Window
+	This file emphasizes the library's most advanced capabilities first, followed by a grouped export list for quick reference.
 
-#### Map Algorithms
-- Frequency Count, Group By Key, First Non-Repeated Element, Anagram Checker, Two Sum, LRU Cache, Most Frequent Element, Top K Frequent, Length of Longest Substring
+	Most advanced algorithms (highlights)
 
-#### String Algorithms
-- Reverse String, Palindrome Checker, Anagram Checker, Longest Palindromic Substring, String Compression  
-- Brute Force Search, KMP Search, Rabin-Karp Search  
-- Longest Common Prefix, Edit Distance, Count Vowels and Consonants
+	- Graph & network
+		- johnsons_algorithm
+		- dinics_algorithm
+		- stoer_wagner_min_cut
+		- yens_algorithm
+		- hierholzer
+		- tarjans_scc
+
+	- Machine Learning & Deep Learning
+		- transformer
+		- cnn
+		- rnn
+		- lstm
+		- gan
+
+	- Optimization & flow
+		- min_cost_flow
+		- hungarian
+		- edmonds_blossom
+
+	- Cryptography & consensus
+		- bls_signatures
+		- ecdsa
+		- pbft
+		- bft
+
+	- Compression & coding
+		- arithmetic
+		- bwt
+		- huffman
+
+	Exports (grouped)
+
+	> The following lists mirror the public exports in `lib/algorithms_core.dart`.
+
+	### Graph algorithms
+	- weighted_edge
+	- bfs
+	- dfs
+	- topological_sort
+	- connected_components
+	- cycle_detection
+	- bipartite_graph
+	- shortest_path
+	- dijkstra
+	- bellman_ford
+	- floyd_warshall
+	- mst_kruskal
+	- mst_prim
+	- kosaraju_scc
+	- articulation_points
+	- johnsons_algorithm
+	- dinics_algorithm
+	- eulerian_path
+	- hamiltonian_path
+	- chinese_postman
+	- stoer_wagner_min_cut
+	- transitive_closure
+	- graph_coloring
+	- spfa
+	- tarjans_scc
+	- bridge_finding
+	- tree_diameter
+	- hierholzer
+	- yens_algorithm
+	- union_find
+
+	### Network / Flow algorithms
+	- a_star
+	- ford_fulkerson
+	- edmonds_karp
+	- dinics_algorithm (network)
+	- tarjans_algorithm
+
+	### Machine Learning
+	- linear_regression
+	- logistic_regression
+	- decision_tree
+	- random_forest
+	- svm
+	- knn
+	- naive_bayes
+	- gradient_boosting
+	- xgboost_like
+	- gradient_boosting_classifier
+	- lightgbm_like
+	- catboost_like
+	- ann
+	- cnn
+	- rnn
+	- lstm
+	- gru
+	- transformer
+	- gan
+	- simulated_annealing
+	- genetic_algorithm
+	- particle_swarm
+	- bayesian_optimization
+	- mdp
+
+	### Reinforcement Learning
+	- q_learning
+	- dqn
+	- sarsa
+	- policy_gradient
+	- actor_critic
+	- ppo
+	- mcts
+
+	### Dynamic Programming (DP)
+	- fibonacci_memoization
+	- knapsack_01
+	- longest_increasing_subsequence
+	- longest_common_subsequence
+	- edit_distance
+	- matrix_path_sum
+	- coin_change
+	- subset_sum
+	- partition_equal_subset_sum
+	- house_robber
+	- jump_game
+	- alternating_subsequences
+	- rod_cutting
+	- minimum_path_sum
+	- unique_paths_with_obstacles
+	- decode_ways
+	- interleaving_string
+	- coin_change_bottom_up
+	- paint_house
+	- burst_balloons
+	- longest_bitonic_subsequence
+	- matrix_chain_multiplication
+	- count_palindromic_subsequences
+	- min_cuts_palindrome_partitioning
+	- max_sum_increasing_subsequence
+	- cherry_pickup
+	- wildcard_matching
+	- regex_matching
+
+	### List algorithms
+	- linear_search
+	- binary_search
+	- merge_sort
+	- bubble_sort
+	- insertion_sort
+	- selection_sort
+	- quick_sort
+	- counting_sort
+	- reverse_list
+	- find_max_min
+	- find_duplicates
+	- kadanes_algorithm
+	- max_sum_subarray_of_size_k
+	- min_sum
+	- average_subarray
+	- two_sum_sorted
+	- remove_duplicates
+	- rotate_array_right
+	- prefix_sum
+
+	### Set algorithms
+	- has_duplicates
+	- disjoint_set
+	- find_intersection
+	- set_difference
+	- is_frequency_unique
+	- has_two_sum
+	- has_unique_window
+	- symmetric_difference
+	- power_set
+	- subset_check
+	- superset_check
+	- disjoint_check
+	- list_to_set_preserve_order
+	- multiset_operations
+
+	### Map algorithms
+	- frequency_count
+	- group_by_key
+	- first_non_repeated_element
+	- anagram_checker
+	- two_sum
+	- lru_cache
+	- most_frequent_element
+	- top_k_frequent
+	- length_of_longest_substring
+	- invert_map
+	- merge_maps_conflict
+	- group_anagrams
+	- word_frequency_ranking
+	- all_pairs_with_sum
+	- index_mapping
+	- mru_cache
+	- count_pairs_with_diff
+	- find_subarrays_with_sum
+	- min_window_substring
+
+	### String algorithms
+	- reverse_string
+	- palindrome_checker
+	- anagram_checker
+	- longest_palindromic_substring
+	- string_compression
+	- brute_force_search
+	- kmp_search
+	- rabin_karp_search
+	- longest_common_prefix
+	- edit_distance
+	- count_vowels_consonants
+	- manacher_longest_palindrome
+	- boyer_moore_search
+	- z_algorithm
+	- rolling_hash
+	- longest_repeating_substring
+	- remove_consecutive_duplicates
+	- min_window_subsequence
+	- atoi
+	- integer_roman
+	- string_permutations
+
+	### Tree algorithms
+	- binary_tree_node
+	- tree_traversals
+	- level_order_traversal
+	- tree_depth
+	- invert_tree
+	- lowest_common_ancestor
+	- validate_bst
+	- tree_diameter
+	- balanced_tree_check
+	- tree_serialization
+	- zigzag_traversal
+	- morris_traversal
+	- threaded_binary_tree_traversal
+	- count_leaf_nodes
+	- count_full_nodes
+	- count_half_nodes
+	- print_all_root_to_leaf_paths
+	- path_sum_in_tree
+	- vertical_order_traversal
+	- boundary_traversal
+	- bottom_top_view_binary_tree
+	- construct_tree_inorder_preorder
+	- construct_tree_inorder_postorder
+	- convert_sorted_array_to_bst
+	- flatten_binary_tree_to_linked_list
+	- lowest_common_ancestor_no_bst
+
+	### Linked list algorithms
+	- linked_list_node
+	- doubly_linked_list_node
+	- insert_delete_at_position
+	- reverse_linked_list
+	- detect_cycle
+	- merge_sorted_lists
+	- remove_nth_from_end
+	- palindrome_linked_list
+	- intersection_of_lists
+	- rotate_linked_list
+	- swap_nodes_in_pairs
+	- remove_duplicates_sorted_list
+	- partition_list
+	- merge_sort_linked_list
+	- add_two_numbers_linked_list
+	- intersection_detection_hashset
+	- reverse_nodes_in_k_group
+	- detect_and_remove_loop
+	- convert_binary_linked_list_to_int
+
+	### Matrix algorithms
+	- flood_fill
+	- island_count_dfs
+	- island_count_bfs
+	- shortest_path_in_grid
+	- word_search (matrix)
+	- path_sum
+	- matrix_rotation
+	- spiral_traversal
+	- surrounded_regions
+
+	### List advanced sorts & selection
+	- heap_sort
+	- shell_sort
+	- gnome_sort
+	- odd_even_sort
+	- pancake_sort
+	- cycle_sort
+	- bucket_sort
+	- radix_sort
+	- pigeonhole_sort
+	- bitonic_sort
+	- comb_sort
+	- stooge_sort
+	- quickselect
+	- lis_binary_search
+	- max_product_subarray
+
+	### Consensus algorithms
+	- proof_of_work
+	- proof_of_stake
+	- delegated_proof_of_stake
+	- proof_of_authority
+	- proof_of_burn
+	- proof_of_capacity
+	- proof_of_elapsed_time
+	- bft
+	- pbft
+	- fba
+
+	### Cryptographic algorithms
+	- sha256
+	- ripemd160
+	- keccak256
+	- scrypt
+	- argon2
+	- ecdsa
+	- eddsa
+	- bls_signatures
+	- scrypt_mining
+
+	### Routing algorithms
+	- bgp_algorithm
+	- ospf_algorithm
+	- rip_algorithm
+	- link_state_routing
+	- distance_vector_routing
+
+	### Wireless / P2P
+	- aodv
+	- dsr
+	- chord
+	- kademlia
+
+	### Compression algorithms
+	- huffman
+	- lzw
+	- rle
+	- arithmetic
+	- bwt
+
+	### Network optimization
+	- max_flow_min_cut
+	- min_cost_flow
+	- hungarian
+	- edmonds_blossom
+
+	Changelog highlights
+
+	- Major feature additions: Machine Learning modules (supervised & deep learning), expanded Graph algorithms (advanced shortest-path and flow), and a broad DP/Matrix suite.
+	- Tooling: debugging helpers under `tooling/` and expanded examples under `example/` to make onboarding easier.
+	- Testing: many new tests added under `test/` for the new modules.
+
+	Notes & next steps
+
+	- This changelog favors readability and a discoverable exports list. If you want a machine-readable export (JSON/CSV) or a separate RELEASES log with commit dates, I can add it.
+
+	```

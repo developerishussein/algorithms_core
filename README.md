@@ -1,6 +1,6 @@
 ## 🧠 algorithms core
 
-![Temporary Logo](https://l.top4top.io/p_35120t9451.png)
+![Temporary Logo](https://k.top4top.io/p_3514x9kqz1.png)
 
 > A comprehensive, fast, and extensible algorithms library for Dart. Includes classic and modern techniques for lists, sets, maps, strings, and graphs — built with clean APIs and strong generics.
 
@@ -204,13 +204,3 @@ Open a PR with a brief description and test cases.
 ## 📄 License
 
 MIT. See `LICENSE`.
----
-## The most important sections of the library algorithms_core 
-## backtracking algorithms
-## Tree.md Important to know the library structure algorithms core
-## Benchmark Report.md To view the library's benchmark results algorithms core
-## graph algorithms
-## dp algorithms
-## list advanced sorts
-## linked list algorithm
----

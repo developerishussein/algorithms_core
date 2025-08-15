@@ -317,3 +317,10 @@ export 'network_optimization/max_flow_min_cut.dart';
 export 'network_optimization/min_cost_flow.dart';
 export 'network_optimization/hungarian.dart';
 export 'network_optimization/edmonds_blossom.dart';
+// Numerical algorithms
+export 'numerical/newton_raphson.dart';
+export 'numerical/bisection.dart';
+export 'numerical/integration.dart';
+export 'numerical/differentiation.dart';
+export 'numerical/lu_decomposition.dart';
+export 'numerical/qr_decomposition.dart';
